@@ -2,7 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ec.edu.espol.bdavance2;
+package com.espol.carpool_espol;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 /**
  *
@@ -93,5 +96,54 @@ public class Usuario {
     public void setPuntuacion(double puntuacion) {
         this.puntuacion = puntuacion;
     }
-    
+    public static String[] desglosarAtributos(Usuario usuario) {
+        Field[] fields = usuario.getClass().getDeclaredFields();
+        String[] atributos = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            fields[i].setAccessible(true);
+            try {
+                atributos[i] = fields[i].get(usuario).toString();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return atributos;
+    }
+
+    public static boolean obtenerAtributo(Usuario usuario, int opcion, String igualA) {
+        String[] atributos = desglosarAtributos(usuario);
+        for (int i = 0; i < atributos.length; i++) {
+            if (i == opcion && atributos[i].equals(igualA)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean obtenerAtributo(Usuario usuario, int opcion, int igualB) {
+        String[] atributos = desglosarAtributos(usuario);
+        for (int i = 0; i < atributos.length; i++) {
+            if (i == opcion && atributos[i].equals(igualB)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean compararAtributo(Usuario usuario, int opcion, int valor) {
+        String[] atributos = desglosarAtributos(usuario);
+        for (Usuario u: BDavance2.usuarios){
+            switch(opcion){
+                case 1:
+                    if(usuario.getPuntuacion()>valor)
+                        return true;
+                case 2:
+                    if(usuario.getPuntuacion()<valor)
+                        return true;
+                case 3:
+                    if(usuario.getPuntuacion()==(double)valor)
+                        return true;
+            }
+        }
+        return false;
+    }
 }
+

@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ec.edu.espol.bdavance2;
+package com.espol.carpool_espol;
+
+import java.lang.reflect.Field;
 
 /**
  *
@@ -25,7 +27,7 @@ public class Resena {
         return correoReviewed;
     }
 
-    public String getCorreoeviewer() {
+    public String getCorreoReviewer() {
         return correoReviewer;
     }
 
@@ -41,7 +43,7 @@ public class Resena {
         this.correoReviewed = correoReviewed;
     }
 
-    public void setCorreoeviewer(String id2) {
+    public void setCorreoReviewer(String id2) {
         this.correoReviewer = correoReviewer;
     }
 
@@ -51,6 +53,20 @@ public class Resena {
 
     public void setResena(String Resena) {
         this.Resena = Resena;
+    }
+    public static String[] desglosarAtributos(Resena res) {
+        Field[] fields = res.getClass().getDeclaredFields();
+        String[] atributos = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            fields[i].setAccessible(true);
+            try {
+                atributos[i] = fields[i].get(res).toString();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return atributos;
+    
     }
     
     

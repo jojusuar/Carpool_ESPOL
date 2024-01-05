@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ec.edu.espol.bdavance2;
+package com.espol.carpool_espol;
 
 import java.time.*;
 
@@ -89,8 +89,8 @@ public class Viaje {
         this.idViaje = idViaje;
     }
 
-    public void setIdRuta(Ruta r) {
-        this.idRuta = r.getIdRuta();
+    public void setIdRuta(int r) {
+        this.idRuta = r;
     }
 
     public void setPrecio(double precio) {
