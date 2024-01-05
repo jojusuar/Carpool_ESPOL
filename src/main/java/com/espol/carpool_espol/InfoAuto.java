@@ -2,26 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ec.edu.espol.bdavance2;
+package com.espol.carpool_espol;
 
 /**
  *
  * @author seoklie
  */
 public class InfoAuto {
-    private String id1;
+    private int id1;
     private String placa;
     private String modelo;
     private String nroChasis;
 
-    public InfoAuto(String id1, String placa, String modelo, String nroChasis) {
+    public InfoAuto(int id1, String placa, String modelo, String nroChasis) {
         this.id1 = id1;
         this.placa = placa;
         this.modelo = modelo;
         this.nroChasis = nroChasis;
     }
+    public InfoAuto(){
+        this.id1 = 0;
+        this.placa = "";
+        this.modelo = "";
+        this.nroChasis = "";
+    }
 
-    public String getEmail() {
+    public int getId1() {
         return id1;
     }
 
@@ -37,8 +43,8 @@ public class InfoAuto {
         return nroChasis;
     }
 
-    public void setEmail(String email) {
-        this.id1 = email;
+    public void setId1(int id1) {
+        this.id1 = id1;
     }
 
     public void setPlaca(String placa) {
