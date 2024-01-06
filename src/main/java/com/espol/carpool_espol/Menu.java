@@ -82,23 +82,31 @@ public class Menu {
                 int op2 = Menu.comparaciones(s2);
                 break;
             case 4:
+                DB.getInfoAuto();
                 break;
             case 5:
+                DB.getTicketSoporte();
                 break;
             case 6:
+                
                 break;
             case 7:
                 DB.getTrips();
                 break;
             case 8:
+                DB.getParadas();
                 break;
             case 9:
+                DB.getReservacion();
                 break;
             case 10:
+                DB.getRuta();
                 break;
             case 11:
+                DB.getPasajero();
                 break;
             case 12:
+                DB.getConductor();
                 break;
             default:
                 System.out.println("Opción no válida");
