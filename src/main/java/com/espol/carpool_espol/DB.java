@@ -496,30 +496,175 @@ public class DB {
     public static void deleteUser(Scanner scanner) {
         scanner.nextLine();
         String table = "usuario";
-        String PK = "email";
-        System.out.println("Ingrese el ID del empleado: ");
+        String[] PKs = {"email"};
+        System.out.println("Ingrese el correo del usuario: ");
         String email = scanner.nextLine();
-        deleteEntry(table, PK, email);
+        Object[] IDs = {email};
+        deleteRow(table, PKs, IDs);
     }
 
-    private static void deleteEntry(String table, String PK, String ID) {
+    public static void deleteClientSupport(Scanner scanner) {
+        scanner.nextLine();
+        String table = "soportealcliente";
+        String[] PKs = {"idempleado"};
+        System.out.println("Ingrese el ID del empleado: ");
+        Integer ID = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {ID};
+        deleteRow(table, PKs, IDs);
+    }
+
+    public static void deleteReview(Scanner scanner) {
+        scanner.nextLine();
+        String table = "resena";
+        String[] PKs = {"correoReviewed", "correoReviewer", "idResena"};
+        System.out.println("Ingrese el correo del usuario reseñado: ");
+        String emailReviewed = scanner.nextLine();
+        System.out.println("Ingrese el correo del usuario que escribió la reseña: ");
+        String emailReviewer = scanner.nextLine();
+        System.out.println("Ingrese el ID de la reseña: ");
+        Integer id = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {emailReviewed, emailReviewer, id};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deleteCarInfo(Scanner scanner) {
+        scanner.nextLine();
+        String table = "infoauto";
+        String[] PKs = {"email", "placa"};
+        System.out.println("Ingrese el correo del conductor: ");
+        String email = scanner.nextLine();
+        System.out.println("Ingrese la placa del auto: ");
+        String plate = scanner.nextLine();
+        Object[] IDs = {email, plate};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deleteSupportTicket(Scanner scanner) {
+        scanner.nextLine();
+        String table = "ticketsoporte";
+        String[] PKs = {"idEmpleado", "email"};
+        System.out.println("Ingrese el ID del asesor de soporte: ");
+        Integer id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Ingrese el correo del usuario: ");
+        String email = scanner.nextLine();
+        Object[] IDs = {id, email};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deleteCarModel(Scanner scanner) {
+        scanner.nextLine();
+        String table = "modeloauto";
+        String[] PKs = {"modelo"};
+        System.out.println("Ingrese el modelo del auto: ");
+        String model = scanner.nextLine();
+        Object[] IDs = {model};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deleteTrip(Scanner scanner) {
+        scanner.nextLine();
+        String table = "viaje";
+        String[] PKs = {"conductor", "idviaje"};
+        System.out.println("Ingrese el correo del conductor del viaje: ");
+        String email = scanner.nextLine();
+        System.out.println("Ingrese el ID del viaje: ");
+        Integer id = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {email, id};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deleteStop(Scanner scanner) {
+        scanner.nextLine();
+        String table = "paradas";
+        String[] PKs = {"idruta", "ubicacionparada"};
+        System.out.println("Ingrese el ID de la ruta: ");
+        Integer id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Ingrese el lugar de la parada: ");
+        String location = scanner.nextLine();
+        Object[] IDs = {id, location};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deleteReservation(Scanner scanner) {
+        scanner.nextLine();
+        String table = "reservacion";
+        String[] PKs = {"email", "idviaje", "idreserva"};
+        System.out.println("Ingrese el correo del pasajero: ");
+        String email = scanner.nextLine();
+        System.out.println("Ingrese el ID del viaje: ");
+        Integer idviaje = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Ingrese el ID de la reserva: ");
+        Integer id = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {email, idviaje, id};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deleteRoute(Scanner scanner) {
+        scanner.nextLine();
+        String table = "ruta";
+        String[] PKs = {"idruta"};
+        System.out.println("Ingrese el ID de la ruta: ");
+        Integer id = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {id};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deletePassenger(Scanner scanner) {
+        scanner.nextLine();
+        String table = "pasajero";
+        String[] PKs = {"email"};
+        System.out.println("Ingrese el correo del usuario: ");
+        String email = scanner.nextLine();
+        Object[] IDs = {email};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    public static void deleteDriver(Scanner scanner) {
+        scanner.nextLine();
+        String table = "conductor";
+        String[] PKs = {"email"};
+        System.out.println("Ingrese el correo del usuario: ");
+        String email = scanner.nextLine();
+        Object[] IDs = {email};
+        deleteRow(table, PKs, IDs);
+    }
+    
+    
+
+    private static void deleteRow(String table, String[] PKs, Object[] IDs) {
         if (!isWhitelisted(table)) {
             return;
         }
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "delete from " + table + " where " + PK + " = ?";
+            String insertQuery = "delete from " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    insertQuery += " and "+PKs[i]+" = ?";
+                }
+            }
+            System.out.println(insertQuery);
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-                preparedStatement.setObject(1, ID);
+                for(int i=0; i < PKs.length; i++){
+                  preparedStatement.setObject(i+1, IDs[i]);  
+                }
                 // Ejecuta la inserción
                 int rowsAffected = preparedStatement.executeUpdate();
 
                 // devuelve el número de entradas añadidas
                 if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
+                    System.out.println("Delete successful. Rows affected: " + rowsAffected);
                 } else {
-                    System.out.println("Insert failed.");
+                    System.out.println("Delete failed.");
                 }
             }
         } catch (SQLException e) {
