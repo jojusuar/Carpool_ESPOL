@@ -4,13 +4,12 @@
  */
 package com.espol.carpool_espol;
 
-import java.time.*;
-
 /**
  *
  * @author seoklie
  */
 public class Viaje {
+
     private int conductor;
     private int idViaje;
     private int idRuta;
@@ -124,6 +123,5 @@ public class Viaje {
     public void setPreferencias(String preferencias) {
         this.preferencias = preferencias;
     }
-    
-    
+
 }
