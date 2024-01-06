@@ -483,6 +483,50 @@ public class DB {
         }
     }
 
+    private static boolean isWhitelisted(String s) {
+        String[] whitelist = {"usuario", "viaje", "ticketsoporte", "resena", "soportealcliente", "pasajero", "conductor", "reservacion", "paradas", "ruta", "infoauto", "modeloauto"};
+        for (String table : whitelist) {
+            if (s.equals(table)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void deleteUser(Scanner scanner) {
+        scanner.nextLine();
+        String table = "usuario";
+        String PK = "email";
+        System.out.println("Ingrese el ID del empleado: ");
+        String email = scanner.nextLine();
+        deleteEntry(table, PK, email);
+    }
+
+    private static void deleteEntry(String table, String PK, String ID) {
+        if (!isWhitelisted(table)) {
+            return;
+        }
+        try {
+            // Query parametrizado para evitar ataques de SQL injection
+            String insertQuery = "delete from " + table + " where " + PK + " = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                preparedStatement.setObject(1, ID);
+                // Ejecuta la inserción
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                // devuelve el número de entradas añadidas
+                if (rowsAffected > 0) {
+                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
+                } else {
+                    System.out.println("Insert failed.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void printUsers() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
