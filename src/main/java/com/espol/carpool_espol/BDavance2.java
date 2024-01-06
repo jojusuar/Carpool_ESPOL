@@ -43,20 +43,8 @@ public class BDavance2 {
                 case 1:
                     int opcionMenuA = 0;
                     while (opcionMenuA != 13) {
-                        System.out.println("Escoja la tabla donde añadirá datos:"
-                                + "1.Soporte Al Cliente.\n"
-                                + "2.Usuario\n"
-                                + "3.Reseña\n"
-                                + "4.InfoAuto\n"
-                                + "5.TicketSoporte\n"
-                                + "6.Modelo Auto.\n"
-                                + "7.Viaje\n"
-                                + "8.Paradas\n"
-                                + "9.Reservacion\n"
-                                + "10.Ruta\n"
-                                + "11.Pasajero.\n"
-                                + "12.Conductor.\n"
-                                + "13. VOLVER");
+                        System.out.println("Escoja la tabla donde añadirá datos:");
+                        Menu.mostrarMenu();
                         opcionMenuA = s1.nextInt();
                         switch (opcionMenuA) {
                             case 1:
@@ -513,20 +501,8 @@ public class BDavance2 {
                 case 4: {
                     int opcionMenuD = 0;
                     while (opcionMenuD != 13) {
-                        System.out.println("Escoja la tabla donde eliminará entradas:"
-                                + "1.Soporte Al Cliente.\n"
-                                + "2.Usuario\n"
-                                + "3.Reseña\n"
-                                + "4.InfoAuto\n"
-                                + "5.TicketSoporte\n"
-                                + "6.Modelo Auto.\n"
-                                + "7.Viaje\n"
-                                + "8.Paradas\n"
-                                + "9.Reservacion\n"
-                                + "10.Ruta\n"
-                                + "11.Pasajero\n"
-                                + "12.Conductor\n"
-                                + "13. VOLVER");
+                        System.out.println("Escoja la tabla donde eliminará entradas:");
+                        Menu.mostrarMenu();
                         opcionMenuD = s1.nextInt();
                         switch (opcionMenuD) {
                             case 1:

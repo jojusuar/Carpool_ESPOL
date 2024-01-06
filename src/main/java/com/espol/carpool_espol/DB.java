@@ -672,7 +672,7 @@ public class DB {
         }
     }
 
-    public static void printUsers() {
+    public static void getUsers() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -696,7 +696,7 @@ public class DB {
         }
     }
 
-    public static void printTrips() {
+    public static void getTrips() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
