@@ -91,6 +91,7 @@ public class BDavance2 {
                 case 2:
                     int opCons = 0;
                     while (opCons != 11) {
+                        System.out.println("Seleccione lo que desee editar");
                         Menu.mostrarMenu();
                         opCons = s1.nextInt();
                         switch (opCons) {
@@ -115,52 +116,8 @@ public class BDavance2 {
                                 }
                             case 2:
                                 System.out.println("Usuarios");
-                                cont = 0;
-                                for (Usuario u : usuarios) {
-                                    cont++;
-                                    System.out.println("#############\n" + "Usuario #" + cont);
-                                    System.out.println("1. IDUsuario: " + u.getId());
-                                    System.out.println("2. Tipo: " + u.getTipo());
-                                    System.out.println("3. Email: " + u.getEmail());
-                                    System.out.println("4. Password: " + u.getPassword());
-                                    System.out.println("5. Nombre: " + u.getNombre());
-                                    System.out.println("6. Apellido: " + u.getApellido());
-                                    System.out.println("7. Telefono: " + u.getTelefono());
-                                    System.out.println("8. Puntuacion: " + u.getPuntuacion());
-                                }
-                                
-                                System.out.println("¿Qué registro desea modificar?");
-                                int opU = s1.nextInt();
-                                Usuario us = usuarios.get(opU);
-                                System.out.println("Seleccionado. Que dato del registro desea cambiar? ");
-                                int usRes = s1.nextInt();
-                                System.out.println("Ingrese el nuevo dato: ");
-                                switch (usRes) {
-                                    case 1:
-                                        int nuevoID = s1.nextInt();
-                                        us.setId(nuevoID);
-                                    case 2:
-                                        tipoUsuario nuevoTipo = tipoUsuario.valueOf(s1.next());
-                                        us.setTipo(nuevoTipo);
-                                    case 3:
-                                        String nuevoE = s1.next();
-                                        us.setEmail(nuevoE);
-                                    case 4:
-                                        String nuevoP = s1.next();
-                                        us.setPassword(nuevoP);
-                                    case 5:
-                                        String nuevoNombre = s1.next();
-                                        us.setNombre(nuevoNombre);
-                                    case 6:
-                                        String nuevoAp = s1.next();
-                                        us.setApellido(nuevoAp);
-                                    case 7:
-                                        String nuevoTelf = s1.next();
-                                        us.setTelefono(nuevoTelf);
-                                    case 8:
-                                        double nuevaPun = s1.nextDouble();
-                                        us.setPuntuacion(nuevaPun);
-                                }
+                                DB.editUser(s1);
+                                break;
                             case 3:
                                 System.out.println("Resena");
                                 cont = 0;
@@ -240,39 +197,9 @@ public class BDavance2 {
                                         System.out.println("Opción no válida");
                                 }
                             case 5:
-                                System.out.println("Tickets de Soporte");
-                                cont = 0;
-                                for (TicketSoporte ticket : tickets) {
-                                    cont++;
-                                    System.out.println("#############\n" + "Ticket #" + cont);
-                                    System.out.println("1. ID Empleado: " + ticket.getIdEmpleado());
-                                    System.out.println("2. Email: " + ticket.getEmail());
-                                    System.out.println("3. Descripción: " + ticket.getDescripcion());
-                                }
-                                
-                                System.out.println("¿Qué ticket desea modificar?");
-                                int opTS = s1.nextInt();
-                                TicketSoporte ticketSeleccionado = tickets.get(opTS);
-                                System.out.println("Seleccionado. ¿Qué dato del ticket desea cambiar?");
-                                int tsRes = s1.nextInt();
-                                System.out.println("Ingrese el nuevo dato:");
-                                
-                                switch (tsRes) {
-                                    case 1:
-                                        int nuevoIdEmpleado = s1.nextInt();
-                                        ticketSeleccionado.setIdEmpleado(nuevoIdEmpleado);
-                                        break;
-                                    case 2:
-                                        String nuevoEmail = s1.next();
-                                        ticketSeleccionado.setEmail(nuevoEmail);
-                                        break;
-                                    case 3:
-                                        String nuevaDescripcion = s1.next();
-                                        ticketSeleccionado.setDescripcion(nuevaDescripcion);
-                                        break;
-                                    default:
-                                        System.out.println("Opción no válida");
-                                }
+                                System.out.println("Tickets de soporte");
+                                DB.editSupportTicket(s1);
+                                break;
                             case 6:
                                 System.out.println("Modelos de Autos");
                                 cont = 0;
