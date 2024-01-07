@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 /**
@@ -722,5 +723,194 @@ public class DB {
             e.printStackTrace();
         }
     }
+    public static void getAutoInfo(){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM infoAuto";
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        int email = resultSet.getInt("email");
+                        String placa = resultSet.getString("placa");
+                        String modelo = resultSet.getString("modelo");
+                        String nroChasis = resultSet.getString("nrochasis");
 
+                        System.out.println("Email: " + email + " - Placa: " + placa + " - Modelo: " + modelo + " - Nro Chasis: " + nroChasis);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void getReview(){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM resenas"; 
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        String correoReviewed = resultSet.getString("correo_reviewed");
+                        String correoReviewer = resultSet.getString("correo_reviewer");
+                        int idResena = resultSet.getInt("id_resena");
+                        String resena = resultSet.getString("resena");
+
+                        System.out.println("Correo del revisado: " + correoReviewed +
+                                           " - Correo del revisor: " + correoReviewer +
+                                           " - ID de Reseña: " + idResena +
+                                           " - Reseña: " + resena);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void getSupportTicket(){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM ticketSoporte"; 
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        int idEmpleado = resultSet.getInt("idEmpleado");
+                        String email = resultSet.getString("email");
+                        String descripcion = resultSet.getString("descripcion");
+
+                        System.out.println("ID de Empleado: " + idEmpleado +
+                                           " - Correo Electrónico: " + email +
+                                           " - Descripción del Ticket: " + descripcion);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void getCarModel(){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM modelosauto";
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        String modelo = resultSet.getString("modelo");
+                        String colorVehiculo = resultSet.getString("colorvehiculo");
+
+                        // Puedes imprimir la información o manejarla de otra manera
+                        System.out.println("Modelo: " + modelo +
+                                           " - Color del Vehículo: " + colorVehiculo);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        }
+    public static void getStops(){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM paradas"; 
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        int idRuta = resultSet.getInt("idruta");
+                        String ubicacionParada = resultSet.getString("ubicacionparada");
+
+                        System.out.println("ID de Ruta: " + idRuta +
+                                           " - Ubicación de Parada: " + ubicacionParada);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void getResevation(){
+         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM tabla_reservaciones"; 
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("email");
+                        int idViaje = resultSet.getInt("idviaje");
+                        int idReserva = resultSet.getInt("idreserva");
+                        String detalle = resultSet.getString("detalle");
+                        String fecha = resultSet.getString("fecha");
+
+                        System.out.println("Correo Electrónico: " + email +
+                                           " - ID de Viaje: " + idViaje +
+                                           " - ID de Reserva: " + idReserva +
+                                           " - Detalle: " + detalle +
+                                           " - Fecha: " + fecha);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
 }
+    public static void getRoute(){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM tabla_rutas"; 
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        int idRuta = resultSet.getInt("idruta");
+                        String origen = resultSet.getString("origen");
+                        String destino = resultSet.getString("destino");
+
+                        System.out.println("ID de Ruta: " + idRuta +
+                                           " - Origen: " + origen +
+                                           " - Destino: " + destino);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void getDrivers(){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM conductor"; 
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("email");
+                        String cuentaBancaria = resultSet.getString("cuentabancaria");
+                        LocalDateTime caducidadLicencia = resultSet.getObject("caducidadLicencia", LocalDateTime.class);
+
+                        System.out.println("Correo Electrónico: " + email +
+                                           " - Cuenta Bancaria: " + cuentaBancaria +
+                                           " - Caducidad de Licencia: " + caducidadLicencia);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+   public static void getPassenger(){
+       try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM pasajero"; 
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("email");
+                        String tarjetaPago = resultSet.getString("tarjetapago");
+
+                        System.out.println("Correo Electrónico: " + email +
+                                           " - Tarjeta de Pago: " + tarjetaPago);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+}
+}
+
