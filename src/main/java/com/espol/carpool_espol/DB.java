@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -818,7 +821,7 @@ public class DB {
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Usuario no encontrado");
+            System.out.println("Ticket de Soporte no encontrado");
         }
 
     }
@@ -1046,5 +1049,546 @@ public class DB {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void editReview(Scanner scanner) {
+        scanner.nextLine();
+        String table = "resena";
+        String[] PKs = {"correoReviewed","correoReviewer","idResena"};
+        System.out.println("Ingrese el ID de la reseña: ");
+        Integer id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Ingrese el correo del usuario que envió la reseña: ");
+        String correoReviewed = scanner.nextLine();
+        System.out.println("Ingrese el correo del usuario que recibió la reseña: ");
+        String correoReviewer = scanner.nextLine();
+        Object[] IDs = {id, correoReviewer, correoReviewed};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String correoReseniado = resultSet.getString("correoReviewed");
+                        String correoReseniador = resultSet.getString("correoReviewer");
+                        int idReview = resultSet.getInt("idResena");
+                        String review = resultSet.getString("resena");
+                        System.out.println("ID de la reseña: " + idReview + "\n"
+                                +
+                                "Correo del usuario reseñado: " + correoReseniado + "\n"
+                                +
+                                "Correo del usuario reseñador: " + correoReseniador + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Reseña: " +review + "2. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese la nueva reseña: ");
+                                String review2 = scanner.nextLine();
+                                String field = "resena";
+                                updateField(scanner, table, field, review2, PKs, IDs);
+                                break;
+                            }
+
+                            default:
+                                break;
+                        }
+                        
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Reseña no encontrada");
+        }
+
+    }
+    
+    public static void editConductor(Scanner scanner) {
+        scanner.nextLine();
+        String table = "conductor";
+        String[] PKs = {"email"};
+        System.out.println("Ingrese el correo del conductor: ");
+        String correo = scanner.nextLine();
+        Object[] IDs = {correo};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("email");
+                        String cuentaBancaria = resultSet.getString("cuentabancaria");
+                        Timestamp caducidadLicencia = resultSet.getTimestamp("caducidadLicencia");
+                        String caducidad = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(caducidadLicencia);
+                        System.out.println("Correo del conductor: " + email + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Cuenta bancaria: " +cuentaBancaria + "2. Caducidad licencia" + caducidad + "3. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese la nueva cuenta bancaria: ");
+                                String cuentaBancaria2 = scanner.nextLine();
+                                String field = "cuentabancaria";
+                                updateField(scanner, table, field, cuentaBancaria2, PKs, IDs);
+                                break;
+                            }
+                            case 2:
+                                System.out.println("Ingrese la nueva caducidad de licencia (formato: yyyy-MM-dd HH:mm:ss): ");
+                                String caducidadInput = scanner.nextLine();
+                                String field = "caducidadLicencia";
+
+                                try {
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date caducidadDate = dateFormat.parse(caducidadInput);
+
+                                    updateField(scanner, table, field, caducidadDate, PKs, IDs);
+
+                                } catch (ParseException e) {
+                                    System.out.println("Formato de fecha y hora incorrecto. Por favor, use yyyy-MM-dd HH:mm:ss");
+                                }
+
+                                break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Conductor no encontrado");
+        }
+
+    }
+    
+    public static void editPasajero(Scanner scanner) {
+        scanner.nextLine();
+        String table = "pasajero";
+        String[] PKs = {"email"};
+        System.out.println("Ingrese el correo del pasajero: ");
+        String correo = scanner.nextLine();
+        Object[] IDs = {correo};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("email");
+                        String tarjetaPago = resultSet.getString("tarjetapago");
+                        System.out.println("Correo del conductor: " + email + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Tarjeta de pago: " +tarjetaPago + "2. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese la nueva tarjeta de pago: ");
+                                String tarjeta2 = scanner.nextLine();
+                                String field = "tarjetapago";
+                                updateField(scanner, table, field, tarjeta2, PKs, IDs);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Pasajero no encontrado");
+        }
+
+    }
+    
+    public static void editInfoAuto(Scanner scanner) {
+        scanner.nextLine();
+        String table = "infoauto";
+        String[] PKs = {"email","placa"};
+        System.out.println("Ingrese el correo del dueño: ");
+        String correo = scanner.nextLine();
+        System.out.println("Ingrese la placa del auto: ");
+        String placa = scanner.nextLine();
+        Object[] IDs = {correo,placa};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("email");
+                        String placaAuto = resultSet.getString("placa");
+                        String modeloAuto = resultSet.getString("modelo");
+                        String nroChasis = resultSet.getString("nrochasis");
+                        System.out.println("Correo del dueño: " + email + "\n"
+                                + "Placa del auto: " + placaAuto
+                                + "Seleccione el campo a editar" + "\n" + "1. Modelo: " + modeloAuto + "2. Número de chasis" + nroChasis + "3. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese el nuevo modelo del auto: ");
+                                String modelo2 = scanner.nextLine();
+                                String field = "modelo";
+                                updateField(scanner, table, field, modelo2, PKs, IDs);
+                                break;
+                            }
+                            case 2:
+                                System.out.println("Ingrese el nuevo número de chasis: ");
+                                String chasis2 = scanner.nextLine();
+                                String field = "nrochasis";
+                                updateField(scanner, table, field, chasis2, PKs, IDs);
+
+                                break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Información del auto no encontrada");
+        }
+
+    }
+    
+    public static void editModeloAuto(Scanner scanner) {
+        scanner.nextLine();
+        String table = "modeloauto";
+        String[] PKs = {"modelo"};
+        System.out.println("Ingrese el modelo de auto: ");
+        String modelo = scanner.nextLine();
+        Object[] IDs = {modelo};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String model = resultSet.getString("modelo");
+                        String color = resultSet.getString("colorvehiculo");
+                        System.out.println("Modelo de auto: " + model + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Color de vehículo: " +color + "2. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese el nuevo color de auto: ");
+                                String color2 = scanner.nextLine();
+                                String field = "colorvehiculo";
+                                updateField(scanner, table, field, color2, PKs, IDs);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Modelo de auto no encontrado");
+        }
+
+    }
+    
+    public static void editRuta(Scanner scanner) {
+        scanner.nextLine();
+        String table = "ruta";
+        String[] PKs = {"idruta"};
+        System.out.println("Ingrese el ID de la ruta: ");
+        int idRuta = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {idRuta};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int id = resultSet.getInt("idruta");
+                        String origen = resultSet.getString("origen");
+                        String destino = resultSet.getString("destino");
+                        System.out.println("Id de la ruta: " + id + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Origen de ruta: " +origen + "2. Destino de ruta"+ destino +"3. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese el nuevo origen de ruta: ");
+                                String origen2 = scanner.nextLine();
+                                String field = "origen";
+                                updateField(scanner, table, field, origen2, PKs, IDs);
+                                break;
+                            }
+                            case 2:
+                                System.out.println("Ingrese el nuevo destino de ruta: ");
+                                String destino2 = scanner.nextLine();
+                                String field = "destino";
+                                updateField(scanner, table, field, destino2, PKs, IDs);
+                                break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Ruta no encontrada");
+        }
+
+    }
+    
+    public static void editReservacion(Scanner scanner) {
+        scanner.nextLine();
+        String table = "reservacion";
+        String[] PKs = {"email","idviaje","idreserva"};
+        System.out.println("Ingrese el correo del usuario que hizo reservación: ");
+        String correo = scanner.nextLine();
+        System.out.println("Ingrese el ID del viaje: ");
+        Integer idViaje = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Ingrese el ID de la reserva: ");
+        Integer idReserva = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {correo, idViaje, idReserva};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("email");
+                        int idViaj = resultSet.getInt("idviaje");
+                        int idReser = resultSet.getInt("idreserva");
+                        String detalle = resultSet.getString("detalle");
+                        Timestamp fechaT = resultSet.getTimestamp("fecha");
+                        String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fechaT);
+                        System.out.println("Correo del usuario que reserva: " + email + "\n"
+                                + "ID del viaje: " + idViaj
+                                + "ID de la reserva: " + idReser
+                                + "Seleccione el campo a editar" + "\n" + "1. Detalle de la reservación: " +detalle + "2. Fecha de la reservación" + fecha + "3. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese los nuevos detalles de la reservación: ");
+                                String detalle2 = scanner.nextLine();
+                                String field = "detalle";
+                                updateField(scanner, table, field, detalle2, PKs, IDs);
+                                break;
+                            }
+                            case 2:
+                                System.out.println("Ingrese la nueva fecha de reservación (formato: yyyy-MM-dd HH:mm:ss): ");
+                                String fecha2 = scanner.nextLine();
+                                String field = "fecha";
+
+                                try {
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date fechaDate = dateFormat.parse(fecha2);
+
+                                    updateField(scanner, table, field, fechaDate, PKs, IDs);
+
+                                } catch (ParseException e) {
+                                    System.out.println("Formato de fecha y hora incorrecto. Por favor, use yyyy-MM-dd HH:mm:ss");
+                                }
+
+                                break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Reservación no encontrada");
+        }
+
+    }
+    
+    public static void editViaje(Scanner scanner) {
+        scanner.nextLine();
+        String table = "viaje";
+        String[] PKs = {"conductor","idviaje"};
+        System.out.println("Ingrese el correo del conductor del viaje: ");
+        String correo = scanner.nextLine();
+        System.out.println("Ingrese el ID del viaje: ");
+        Integer idViaje = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {correo,idViaje};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("conductor");
+                        int id = resultSet.getInt("idviaje");
+                        int id2 = resultSet.getInt("idruta");
+                        double precio = resultSet.getDouble("precio");
+                        double tarifa = resultSet.getDouble("tarifa");
+                        String estado = resultSet.getString("estado");
+                        int asientos = resultSet.getInt("asientosdisponibles");
+                        Time hora = resultSet.getTime("hora");
+                        Date fecha = resultSet.getDate("fecha");
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                        String horaString = timeFormat.format(hora);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        String fechaString = dateFormat.format(fecha);
+                        String novedad = resultSet.getString("novedad");
+                        String preferencias = resultSet.getString("preferencias");
+                        System.out.println("Correo del conductor: " + email + "\n"
+                                + "ID del viaje: " + id
+                                + "ID de la ruta: " + id2
+                                + "Seleccione el campo a editar" + "\n" 
+                                + "1. Precio: " + precio + "\n" 
+                                + "2. Tarifa: " + tarifa + "\n" 
+                                + "3. Hora: " + horaString + "\n" 
+                                + "4. Estado: " + estado + "\n" 
+                                + "5. Asientos disponibles: " + asientos + "\n" 
+                                + "6. Novedad: " + novedad + "\n" 
+                                + "7. Fecha: " + fechaString + "\n" 
+                                + "8. Preferencias: " + preferencias + "\n" 
+                                + "9. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese el nuevo precio: ");
+                                double precio2 = scanner.nextDouble();
+                                scanner.nextLine();
+                                String field = "precio";
+                                updateField(scanner, table, field, precio2, PKs, IDs);
+                                break;
+                            }
+
+                            case 2: {
+                                System.out.println("Ingrese la nueva tarifa: ");
+                                double tarifa2 = scanner.nextDouble();
+                                scanner.nextLine();
+                                String field = "tarifa";
+                                updateField(scanner, table, field, tarifa2, PKs, IDs);
+                                break;
+                            }
+                            case 3: {
+                                System.out.println("Ingresar la nueva hora (formato: HH:mm:ss): ");
+                                String horaInput = scanner.nextLine();
+
+                                try {
+                                    SimpleDateFormat timeFormat2 = new SimpleDateFormat("HH:mm:ss");
+                                    Time hora2 = new Time(timeFormat2.parse(horaInput).getTime());
+
+                                    String field = "hora";
+                                    updateField(scanner, table, field, hora2, PKs, IDs);
+
+                                } catch (ParseException e) {
+                                    System.out.println("Formato de hora incorrecto. Por favor, use HH:mm:ss");
+                                }
+                                break;
+                            }
+                            case 4: {
+                                System.out.println("Ingrese el nuevo estado: ");
+                                String estado2 = scanner.nextLine();
+                                String field = "estado";
+                                updateField(scanner, table, field, estado2, PKs, IDs);
+                                break;
+                            }
+                            case 5: {
+                                System.out.println("Ingrese los nuevos asientos disponibles: ");
+                                Integer asientos2 = scanner.nextInt();
+                                scanner.nextLine();
+                                String field = "asientosdisponibles";
+                                updateField(scanner, table, field, asientos2, PKs, IDs);
+                                break;
+                            }
+                            case 6: {
+                                System.out.println("Ingrese la nueva novedad: ");
+                                String novedad2 = scanner.nextLine();
+                                String field = "novedad";
+                                updateField(scanner, table, field, novedad2, PKs, IDs);
+                                break;
+                            }
+                            case 7: {
+                                System.out.println("Ingresar la nueva fecha (formato: yyyy-MM-dd): ");
+                                String fechaInput = scanner.nextLine();
+
+                                try {
+                                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+                                    Date fecha2 = dateFormat2.parse(fechaInput);
+
+                                    String field = "fecha";
+                                    updateField(scanner, table, field, fecha2, PKs, IDs);
+
+                                } catch (ParseException e) {
+                                    System.out.println("Formato de fecha incorrecto. Por favor, use yyyy-MM-dd");
+                                }
+                                break;
+                            }
+                            case 8: {
+                                System.out.println("Ingrese las nuevas preferencias: ");
+                                String preferencias2 = scanner.nextLine();
+                                String field = "preferencias";
+                                updateField(scanner, table, field, preferencias2, PKs, IDs);
+                                break;
+                            }
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e ) {
+            System.out.println("Viaje no encontrado");
+        }
+
     }
 }
