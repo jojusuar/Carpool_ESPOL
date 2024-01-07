@@ -716,7 +716,7 @@ public class DB {
                                 System.out.println("Ingrese los nuevos nombres: ");
                                 String name2 = scanner.nextLine();
                                 String field = "nombre";
-                                updateField(scanner,table,  field, name2, PKs, IDs);
+                                updateField(scanner, table, field, name2, PKs, IDs);
                                 break;
                             }
                             case 3: {
@@ -768,7 +768,63 @@ public class DB {
         }
 
     }
-    
+
+    public static void editReview(Scanner scanner) {
+        scanner.nextLine();
+        String table = "resena";
+        String[] PKs = {"correoReviewed", "correoReviewer", "idResena"};
+        System.out.println("Ingrese el correo del usuario reseñado: ");
+        String emailReviewed = scanner.nextLine();
+        System.out.println("Ingrese el correo del usuario que escribió la reseña: ");
+        String emailReviewer = scanner.nextLine();
+        System.out.println("Ingrese el ID de la reseña: ");
+        Integer id = scanner.nextInt();
+        scanner.nextLine();
+        Object[] IDs = {emailReviewed, emailReviewer, id};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String email1 = resultSet.getString("correoReviewed");
+                        String email2 = resultSet.getString("correoReviewer");
+                        Integer idResena = resultSet.getInt("idResena");
+                        String resena = resultSet.getString("resena");
+                        System.out.println("Usuario reseñado: " + email1 + "\n"
+                                + "Usuario que reseña: " + email2 + "\n"
+                                + "ID de la reseña: " + idResena + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Reseña: " + resena + "\n" + "2. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese la nueva reseña: ");
+                                String descripcion2 = scanner.nextLine();
+                                String field = "resena";
+                                updateField(scanner, table, field, descripcion2, PKs, IDs);
+                                break;
+                            }
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Usuario no encontrado");
+        }
+    }
+
     public static void editSupportTicket(Scanner scanner) {
         scanner.nextLine();
         String table = "ticketsoporte";
@@ -797,9 +853,8 @@ public class DB {
                         String email = resultSet.getString("email");
                         String descripcion = resultSet.getString("descripcion");
                         System.out.println("ID del empleado de soporte: " + idempleado + "\n"
-                                +
-                                "Correo del usuario: " + email + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Descripción: " +descripcion + "2. CANCELAR" + "\n");
+                                + "Correo del usuario: " + email + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Descripción: " + descripcion + "\n" + "2. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -820,13 +875,117 @@ public class DB {
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Usuario no encontrado");
         }
-
     }
 
-    private static void updateField(Scanner scanner,String table, String field, Object change, String[] PKs, Object[] IDs) {
+    public static void editCarInfo(Scanner scanner) {
+        scanner.nextLine();
+        String table = "infoauto";
+        String[] PKs = {"email", "placa"};
+        System.out.println("Ingrese el correo del conductor: ");
+        String correo = scanner.nextLine();
+        System.out.println("Ingrese la placa del auto: ");
+        String placa = scanner.nextLine();
+        Object[] IDs = {correo, placa};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String email = resultSet.getString("email");
+                        String plate = resultSet.getString("placa");
+                        String model = resultSet.getString("modelo");
+                        String chasis = resultSet.getString("nrochasis");
+                        System.out.println("Correo del conductor: " + email + "\n"
+                                + "placa del auto: " + plate + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Modelo del auto: " + model + "\n" + "2. Número de chasis: " + chasis + "\n" + "3. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese el nuevo modelo: ");
+                                String model2 = scanner.nextLine();
+                                String field = "modelo";
+                                updateField(scanner, table, field, model2, PKs, IDs);
+                                break;
+                            }
+                            case 2: {
+                                System.out.println("Ingrese el nuevo número de chasis: ");
+                                String chasis2 = scanner.nextLine();
+                                String field = "nrochasis";
+                                updateField(scanner, table, field, chasis2, PKs, IDs);
+                                break;
+                            }
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Usuario no encontrado");
+        }
+    }
+    
+    public static void editCarModel(Scanner scanner) {
+        scanner.nextLine();
+        String table = "modeloauto";
+        String[] PKs = {"modelo"};
+        System.out.println("Ingrese el modelo del auto: ");
+        String modelo = scanner.nextLine();
+        Object[] IDs = {modelo};
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
+            if (PKs.length > 1) {
+                for (int i = 1; i < PKs.length; i++) {
+                    sqlQuery += " and " + PKs[i] + " = ?";
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                for (int i = 0; i < PKs.length; i++) {
+                    statement.setObject(i + 1, IDs[i]);
+                }
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String model = resultSet.getString("modelo");
+                        String color = resultSet.getString("colorvehiculo");
+                        System.out.println("CModelo del auto: " + modelo + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Color: " + color + "\n" + "2. CANCELAR" + "\n");
+                        int choice = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice) {
+                            case 1: {
+                                System.out.println("Ingrese el nuevo color: ");
+                                String color2 = scanner.nextLine();
+                                String field = "colorvehiculo";
+                                updateField(scanner, table, field, color2, PKs, IDs);
+                                break;
+                            }
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Usuario no encontrado");
+        }
+    }
+
+    private static void updateField(Scanner scanner, String table, String field, Object change, String[] PKs, Object[] IDs) {
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "update "+table+" set " + field + " = ? where " + PKs[0] + "= '" + IDs[0] + "'";
+            String insertQuery = "update " + table + " set " + field + " = ? where " + PKs[0] + "= '" + IDs[0] + "'";
             if (PKs.length > 1) {
                 for (int i = 1; i < PKs.length; i++) {
                     insertQuery += " and " + PKs[i] + " = '" + IDs[i] + "'";
@@ -849,8 +1008,6 @@ public class DB {
             e.printStackTrace();
         }
     }
-    
-    
 
     public static void getUsers() {
         try {
@@ -902,7 +1059,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getmodeloauto(){
+
+    public static void getmodeloauto() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -911,7 +1069,7 @@ public class DB {
                     while (resultSet.next()) {
                         String modelo = resultSet.getString("modelo");
                         String colorvehiculo = resultSet.getString("colorvehiculo");
-                        System.out.println("Modelo del carro: "+modelo+"Color: "+(colorvehiculo != null ? colorvehiculo : "N/A"));
+                        System.out.println("Modelo del carro: " + modelo + "Color: " + (colorvehiculo != null ? colorvehiculo : "N/A"));
                     }
                 }
             }
@@ -919,7 +1077,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getTicketSoporte(){
+
+    public static void getTicketSoporte() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -929,7 +1088,7 @@ public class DB {
                         int idEmpleado = resultSet.getInt("idEmpleado");
                         String email = resultSet.getString("email");
                         String descripcion = resultSet.getString("descripcion");
-                        System.out.println("ID Empleado Encargado: "+idEmpleado+" Email: "+email+" Descripción:"+ (descripcion != null ? descripcion : "N/A"));
+                        System.out.println("ID Empleado Encargado: " + idEmpleado + " Email: " + email + " Descripción:" + (descripcion != null ? descripcion : "N/A"));
                     }
                 }
             }
@@ -937,7 +1096,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getParadas(){
+
+    public static void getParadas() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -946,7 +1106,7 @@ public class DB {
                     while (resultSet.next()) {
                         int idruta = resultSet.getInt("idruta");
                         String ubicacionparada = resultSet.getString("ubicacionparada");
-                        System.out.println("ID Ruta Asignada: "+idruta+" Parada: "+ubicacionparada);
+                        System.out.println("ID Ruta Asignada: " + idruta + " Parada: " + ubicacionparada);
                     }
                 }
             }
@@ -954,7 +1114,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getReservacion(){
+
+    public static void getReservacion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -967,7 +1128,7 @@ public class DB {
                         String detalle = resultSet.getString("detalle");
                         Timestamp timestamp = resultSet.getTimestamp("fecha");
                         String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
-                        System.out.println("Email del Pasajero: "+email+" ID viaje: "+idviaje+" ID reserva: "+idreserva+" Detalles: "+(detalle != null ? detalle : "N/A")+" Fecha: "+fecha);
+                        System.out.println("Email del Pasajero: " + email + " ID viaje: " + idviaje + " ID reserva: " + idreserva + " Detalles: " + (detalle != null ? detalle : "N/A") + " Fecha: " + fecha);
                     }
                 }
             }
@@ -975,7 +1136,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getRuta(){
+
+    public static void getRuta() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -985,7 +1147,7 @@ public class DB {
                         int idruta = resultSet.getInt("idruta");
                         String origen = resultSet.getString("origen");
                         String destino = resultSet.getString("destino");
-                        System.out.println("ID de la ruta: "+idruta+" ID viaje: "+(origen != null ? origen : "N/A")+" ID reserva: "+(destino != null ? destino : "N/A"));
+                        System.out.println("ID de la ruta: " + idruta + " ID viaje: " + (origen != null ? origen : "N/A") + " ID reserva: " + (destino != null ? destino : "N/A"));
                     }
                 }
             }
@@ -993,7 +1155,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getPasajero(){
+
+    public static void getPasajero() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -1002,7 +1165,7 @@ public class DB {
                     while (resultSet.next()) {
                         String email = resultSet.getString("email");
                         String tarjetapago = resultSet.getString("tarjetapago");
-                        System.out.println("Email del pasajero: "+email+" Tarjeta asociada: "+tarjetapago);
+                        System.out.println("Email del pasajero: " + email + " Tarjeta asociada: " + tarjetapago);
                     }
                 }
             }
@@ -1010,7 +1173,26 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getConductor(){
+
+    public static void getClientSupport() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM soportealcliente";
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        int id = resultSet.getInt("idempleado");
+                        String tarjetapago = resultSet.getString("tarjetapago");
+                        System.out.println("ID del empleado de soporte: " + id);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getConductor() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -1020,7 +1202,7 @@ public class DB {
                         String email = resultSet.getString("email");
                         String cuentabancaria = resultSet.getString("cuentabancaria");
                         String caducidadlicencia = resultSet.getString("caducidadlicencia");
-                        System.out.println("Email del conductor: "+email+" Cuenta asociada: "+(cuentabancaria != null ? cuentabancaria : "N/A")+" Caducidad de la Licencia: "+(caducidadlicencia != null ? caducidadlicencia : "N/A"));
+                        System.out.println("Email del conductor: " + email + " Cuenta asociada: " + (cuentabancaria != null ? cuentabancaria : "N/A") + " Caducidad de la Licencia: " + (caducidadlicencia != null ? caducidadlicencia : "N/A"));
                     }
                 }
             }
@@ -1028,7 +1210,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getInfoAuto(){
+
+    public static void getInfoAuto() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -1039,7 +1222,31 @@ public class DB {
                         String placa = resultSet.getString("placa");
                         String modelo = resultSet.getString("modelo");
                         String nrochasis = resultSet.getString("nrochasis");
-                        System.out.println("Email del conductor: "+email+" Placa: "+placa+" Modelo: "+modelo+" NRO de Chasis: "+nrochasis);
+                        System.out.println("Email del conductor: " + email + " Placa: " + placa + " Modelo: " + modelo + " NRO de Chasis: " + nrochasis);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getReview() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM resenas";
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        String correoReviewed = resultSet.getString("correo_reviewed");
+                        String correoReviewer = resultSet.getString("correo_reviewer");
+                        int idResena = resultSet.getInt("id_resena");
+                        String resena = resultSet.getString("resena");
+
+                        System.out.println("Correo del revisado: " + correoReviewed
+                                + " - Correo del revisor: " + correoReviewer
+                                + " - ID de Reseña: " + idResena
+                                + " - Reseña: " + resena);
                     }
                 }
             }

@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @author seoklie
  */
 public class BDavance2 {
-    
+
     static ArrayList<SoporteCliente> soportes = new ArrayList<>();
     static ArrayList<Usuario> usuarios = new ArrayList<>();
     static ArrayList<Resena> resenas = new ArrayList<>();
@@ -23,7 +23,7 @@ public class BDavance2 {
     static ArrayList<Parada> paradas = new ArrayList<>();
     static ArrayList<Reservacion> reser = new ArrayList<>();
     static ArrayList<Ruta> rutas = new ArrayList<>();
-    
+
     public static void main(String[] args) {
         DB.startConnection();
         System.out.println("---MENU---");
@@ -90,148 +90,40 @@ public class BDavance2 {
                     break;
                 case 2:
                     int opCons = 0;
-                    while (opCons != 11) {
+                    while (opCons != 13) {
                         System.out.println("Seleccione lo que desee editar");
                         Menu.mostrarMenu();
                         opCons = s1.nextInt();
                         switch (opCons) {
-                            case 1:
+                            case 1: {
                                 System.out.println("Soporte al Cliente");
-                                int cont = 0;
-                                for (SoporteCliente sc : soportes) {
-                                    cont++;
-                                    System.out.println("#############\n" + "Soporte al cliente #" + cont);
-                                    System.out.println("IDSoporteCliente: " + sc.getIdEmpleado());
-                                }
-                                
-                                System.out.println("¿Qué registro desea modificar?");
-                                int regNum = s1.nextInt();
-                                SoporteCliente sc1 = soportes.get(regNum);
-                                System.out.println("Seleccionado. ¿Qué dato quiere cambiar?\n1) ID.");
-                                int opsc1 = s1.nextInt();
-                                if (opsc1 == 1) {
-                                    System.out.println("Ingrese el nuevo dato: ");
-                                    int nuevoid = s1.nextInt();
-                                    sc1.setIdEmpleado(nuevoid);
-                                }
+                                System.out.println("Este elemento no tiene campos editables.");
+                            }
+                            break;
                             case 2:
                                 System.out.println("Usuarios");
                                 DB.editUser(s1);
                                 break;
                             case 3:
                                 System.out.println("Resena");
-                                cont = 0;
-                                for (Resena r : resenas) {
-                                    cont++;
-                                    System.out.println("#############\n" + "Reseña #" + cont);
-                                    System.out.println("1. Correo Reviewed: " + r.getCorreoReviewed());
-                                    System.out.println("2. Correo Reviewer: " + r.getCorreoReviewer());
-                                    System.out.println("3. ID Reseña: " + r.getIdResena());
-                                    System.out.println("4. Reseña: " + r.getResena());
-                                }
-                                
-                                System.out.println("¿Qué registro desea modificar?");
-                                int opR = s1.nextInt();
-                                Resena resenaSeleccionada = resenas.get(opR);
-                                System.out.println("Seleccionado. ¿Qué dato del registro desea cambiar?");
-                                int resenaRes = s1.nextInt();
-                                System.out.println("Ingrese el nuevo dato:");
-                                
-                                switch (resenaRes) {
-                                    case 1:
-                                        String nuevoCorreoReviewed = s1.next();
-                                        resenaSeleccionada.setCorreoReviewed(nuevoCorreoReviewed);
-                                        break;
-                                    case 2:
-                                        String nuevoCorreoReviewer = s1.next();
-                                        resenaSeleccionada.setCorreoReviewer(nuevoCorreoReviewer);
-                                        break;
-                                    case 3:
-                                        int nuevoIdResena = s1.nextInt();
-                                        resenaSeleccionada.setIdResena(nuevoIdResena);
-                                        break;
-                                    case 4:
-                                        String nuevaResena = s1.next();
-                                        resenaSeleccionada.setResena(nuevaResena);
-                                        break;
-                                    default:
-                                        System.out.println("Opción no válida");
-                                }
+                                DB.editReview(s1);
+                                break;
                             case 4:
                                 System.out.println("Información de Autos");
-                                cont = 0;
-                                for (InfoAuto infoAuto : inf) {
-                                    cont++;
-                                    System.out.println("#############\n" + "Auto #" + cont);
-                                    System.out.println("1. ID1: " + infoAuto.getId1());
-                                    System.out.println("2. Placa: " + infoAuto.getPlaca());
-                                    System.out.println("3. Modelo: " + infoAuto.getModelo());
-                                    System.out.println("4. Número de Chasis: " + infoAuto.getNroChasis());
-                                }
-                                
-                                System.out.println("¿Qué registro desea modificar?");
-                                int opIA = s1.nextInt();
-                                InfoAuto infoAutoSeleccionado = inf.get(opIA);
-                                System.out.println("Seleccionado. ¿Qué dato del registro desea cambiar?");
-                                int iaRes = s1.nextInt();
-                                System.out.println("Ingrese el nuevo dato:");
-                                
-                                switch (iaRes) {
-                                    case 1:
-                                        int nuevoId1 = s1.nextInt();
-                                        infoAutoSeleccionado.setId1(nuevoId1);
-                                        break;
-                                    case 2:
-                                        String nuevaPlaca = s1.next();
-                                        infoAutoSeleccionado.setPlaca(nuevaPlaca);
-                                        break;
-                                    case 3:
-                                        String nuevoModelo = s1.next();
-                                        infoAutoSeleccionado.setModelo(nuevoModelo);
-                                        break;
-                                    case 4:
-                                        String nuevoNroChasis = s1.next();
-                                        infoAutoSeleccionado.setNroChasis(nuevoNroChasis);
-                                        break;
-                                    default:
-                                        System.out.println("Opción no válida");
-                                }
+                                DB.editCarInfo(s1);
+                                break;
+
                             case 5:
                                 System.out.println("Tickets de soporte");
                                 DB.editSupportTicket(s1);
                                 break;
                             case 6:
                                 System.out.println("Modelos de Autos");
-                                cont = 0;
-                                for (ModeloAuto modeloAuto : modelos) {
-                                    System.out.println("#############\n" + "Modelo de Auto #" + cont);
-                                    System.out.println("1. Modelo: " + modeloAuto.getModelo());
-                                    System.out.println("2. Color del Vehículo: " + modeloAuto.getColorVehiculo());
-                                    cont++;
-                                }
-                                
-                                System.out.println("¿Qué modelo de auto desea modificar?");
-                                int opMA = s1.nextInt();
-                                ModeloAuto modeloAutoSeleccionado = modelos.get(opMA);
-                                System.out.println("Seleccionado. ¿Qué dato del modelo de auto desea cambiar?");
-                                int maRes = s1.nextInt();
-                                System.out.println("Ingrese el nuevo dato:");
-                                
-                                switch (maRes) {
-                                    case 1:
-                                        String nuevoModelo = s1.next();
-                                        modeloAutoSeleccionado.setModelo(nuevoModelo);
-                                        break;
-                                    case 2:
-                                        String nuevoColorVehiculo = s1.next();
-                                        modeloAutoSeleccionado.setColorVehiculo(nuevoColorVehiculo);
-                                        break;
-                                    default:
-                                        System.out.println("Opción no válida");
-                                }
+                                DB.editCarModel(s1);
+                                break;
                             case 7:
                                 System.out.println("Viajes");
-                                cont = 0;
+                                int cont = 0;
                                 for (Viaje viaje : viajes) {
                                     cont++;
                                     System.out.println("#############\n" + "Viaje #" + cont);
@@ -247,14 +139,14 @@ public class BDavance2 {
                                     System.out.println("10. Fecha: " + viaje.getFecha());
                                     System.out.println("11. Preferencias: " + viaje.getPreferencias());
                                 }
-                                
+
                                 System.out.println("¿Qué viaje desea modificar?");
                                 int opV = s1.nextInt();
                                 Viaje viajeSeleccionado = viajes.get(opV);
                                 System.out.println("Seleccionado. ¿Qué dato del viaje desea cambiar?");
                                 int vRes = s1.nextInt();
                                 System.out.println("Ingrese el nuevo dato:");
-                                
+
                                 switch (vRes) {
                                     case 1:
                                         int nuevoConductor = s1.nextInt();
@@ -299,7 +191,7 @@ public class BDavance2 {
                                     case 11:
                                         String nuevasPreferencias = s1.next();
                                         viajeSeleccionado.setPreferencias(nuevasPreferencias);
-                                    
+
                                 }
                             case 8:
                                 System.out.println("Paradas");
@@ -313,14 +205,14 @@ public class BDavance2 {
                                         System.out.println("   - " + ubicacion);
                                     }
                                 }
-                                
+
                                 System.out.println("¿Qué parada desea modificar?");
                                 int opParada = s1.nextInt();
                                 Parada paradaSeleccionada = paradas.get(opParada);
                                 System.out.println("Seleccionada. ¿Qué dato de la parada desea cambiar?");
                                 int paradaRes = s1.nextInt();
                                 System.out.println("Ingrese el nuevo dato:");
-                                
+
                                 switch (paradaRes) {
                                     case 1:
                                         int nuevoIdRuta = s1.nextInt();
@@ -336,7 +228,7 @@ public class BDavance2 {
                                     default:
                                         System.out.println("Opción no válida");
                                 }
-                            
+
                             case 9:
                                 System.out.println("Reservaciones");
                                 cont = 0;
@@ -349,14 +241,14 @@ public class BDavance2 {
                                     System.out.println("4. Detalle: " + reservacion.getDetalle());
                                     System.out.println("5. Fecha: " + reservacion.getFecha());
                                 }
-                                
+
                                 System.out.println("¿Qué reservación desea modificar?");
                                 int opReserva = s1.nextInt();
                                 Reservacion reservacionSeleccionada = reser.get(opReserva);
                                 System.out.println("Seleccionado. ¿Qué dato de la reservación desea cambiar?");
                                 int reservaRes = s1.nextInt();
                                 System.out.println("Ingrese el nuevo dato:");
-                                
+
                                 switch (reservaRes) {
                                     case 1:
                                         String nuevoEmail = s1.next();
@@ -391,14 +283,14 @@ public class BDavance2 {
                                     System.out.println("2. Origen: " + ruta.getOrigen());
                                     System.out.println("3. Destino: " + ruta.getDestino());
                                 }
-                                
+
                                 System.out.println("¿Qué ruta desea modificar?");
                                 int opRuta = s1.nextInt();
                                 Ruta rutaSeleccionada = rutas.get(opRuta);
                                 System.out.println("Seleccionado. ¿Qué dato de la ruta desea cambiar?");
                                 int rutaRes = s1.nextInt();
                                 System.out.println("Ingrese el nuevo dato:");
-                                
+
                                 switch (rutaRes) {
                                     case 1:
                                         int nuevoIdRuta = s1.nextInt();
