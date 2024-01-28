@@ -53,10 +53,9 @@ public class DB {
     }
 
     public static void newUser(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into usuario (email,contrasena,nombre,apellido,telefono) VALUES (?, ?, ?, ?, ?)";
+            String insertQuery = "CALL insertarUsuario(?, ?, ?, ?, ?)";
             System.out.println("Ingrese un correo electrónico: ");
             String email = scanner.nextLine();
             System.out.println("Ingrese una contraseña: ");
@@ -75,15 +74,7 @@ public class DB {
                 preparedStatement.setString(4, lastname);
                 preparedStatement.setString(5, phone);
 
-                // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,35 +82,17 @@ public class DB {
     }
 
     public static void addCreditCard(Scanner scanner) {
-        scanner.nextLine();
         try {
             System.out.println("Ingrese el email del usuario: ");
             String email = scanner.nextLine();
             System.out.println("Ingrese el número de tarjeta de crédito: ");
             String card = scanner.nextLine();
-            String editQuery = "update usuario set espasajero=1 where email=?";
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(editQuery)) {
-                preparedStatement.setString(1, email);
-                int rowsAffected = preparedStatement.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println("Edit successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
-            }
-
-            String insertQuery = "insert into pasajero VALUES (?, ?)";
+            String insertQuery = "CALL hacerPasajero(?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                 preparedStatement.setString(1, email);
                 preparedStatement.setString(2, card);
-                int rowsAffected = preparedStatement.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
 
         } catch (SQLException e) {
@@ -128,7 +101,6 @@ public class DB {
     }
 
     public static void addBankAccount(Scanner scanner) {
-        scanner.nextLine();
         try {
             System.out.println("Ingrese el email del usuario: ");
             String email = scanner.nextLine();
@@ -138,30 +110,13 @@ public class DB {
             System.out.println("Ingrese la fecha de caducidad de su licencia de conducir (yyyy-mm-dd):");
             String caducidad = scanner.nextLine();
 
-            String editQuery = "update usuario set esconductor=1 where email=?";
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(editQuery)) {
-                preparedStatement.setString(1, email);
-                int rowsAffected = preparedStatement.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println("Edit successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
-            }
-
-            String insertQuery = "insert into conductor VALUES (?, ?, ?)";
+            String insertQuery = "CALL hacerConductor(?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                 preparedStatement.setString(1, email);
                 preparedStatement.setString(2, bank);
                 preparedStatement.setString(3, caducidad);
-                int rowsAffected = preparedStatement.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
 
         } catch (SQLException e) {
@@ -170,10 +125,9 @@ public class DB {
     }
 
     public static void newClientSupport(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into soportealcliente (idempleado) VALUES (?)";
+            String insertQuery = "CALL insertarEmpleadoSoporte(?)";
             System.out.println("Ingrese el ID del empleado: ");
             int id = scanner.nextInt();
             scanner.nextLine();
@@ -196,10 +150,9 @@ public class DB {
     }
 
     public static void newCarModel(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into modeloauto VALUES (?, ?)";
+            String insertQuery = "CALL insertarModeloAuto(?, ?)";
             System.out.println("Ingrese el modelo del auto: ");
             String model = scanner.nextLine();
             System.out.println("Ingrese el color del auto: ");
@@ -209,14 +162,7 @@ public class DB {
                 preparedStatement.setString(1, model);
                 preparedStatement.setString(2, color);
                 // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -224,10 +170,9 @@ public class DB {
     }
 
     public static void newRoute(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into ruta VALUES (?, ?, ?)";
+            String insertQuery = "CALL insertarRuta(?, ?, ?)";
             System.out.println("Ingrese el ID de la ruta: ");
             int id = scanner.nextInt();
             scanner.nextLine();
@@ -241,14 +186,7 @@ public class DB {
                 preparedStatement.setString(2, source);
                 preparedStatement.setString(3, target);
                 // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -256,10 +194,9 @@ public class DB {
     }
 
     public static void newStop(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into paradas(ubicacionparada, idruta) VALUES (?, ?)";
+            String insertQuery = "CALL insertarParada(?, ?)";
             System.out.println("Ingrese el ID de la ruta: ");
             int routeid = scanner.nextInt();
             scanner.nextLine();
@@ -267,17 +204,10 @@ public class DB {
             String location = scanner.nextLine();
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-                preparedStatement.setString(1, location);
-                preparedStatement.setInt(2, routeid);
+                preparedStatement.setInt(1, routeid);
+                preparedStatement.setString(2, location);
                 // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -285,10 +215,9 @@ public class DB {
     }
 
     public static void newReview(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into resena VALUES (?, ?, ?, ?)";
+            String insertQuery = "CALL insertarResena(?, ?, ?, ?)";
             System.out.println("Ingrese el correo del usuario a reseñar: ");
             String reviewed = scanner.nextLine();
             System.out.println("Ingrese el correo de quien escribe la reseña: ");
@@ -305,14 +234,7 @@ public class DB {
                 preparedStatement.setInt(3, id);
                 preparedStatement.setString(4, review);
                 // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -320,10 +242,9 @@ public class DB {
     }
 
     public static void newCarInfo(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into infoauto VALUES (?, ?, ?, ?)";
+            String insertQuery = "CALL insertarInfoAuto(?, ?, ?, ?)";
             System.out.println("InfoAuto");
             System.out.println("Ingrese el correo del conductor: ");
             String email = scanner.nextLine();
@@ -340,14 +261,7 @@ public class DB {
                 preparedStatement.setString(3, modelo);
                 preparedStatement.setString(4, nroChasis);
                 // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -355,10 +269,9 @@ public class DB {
     }
 
     public static void newSupportTicket(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into ticketsoporte VALUES (?, ?, ?)";
+            String insertQuery = "CALL insertarTicketSoporte(?, ?, ?)";
             System.out.println("Ingrese el ID del empleado: ");
             int idemployee = scanner.nextInt();
             scanner.nextLine();
@@ -372,14 +285,7 @@ public class DB {
                 preparedStatement.setString(2, email);
                 preparedStatement.setString(3, description);
                 // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -387,10 +293,9 @@ public class DB {
     }
 
     public static void newTrip(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into viaje VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertQuery = "CALL insertarViaje(?, ?, ?, ?, ?, ?, ?)";
             System.out.println("Ingrese el correo del conductor: ");
             String email = scanner.nextLine();
             System.out.println("Ingrese el ID del viaje: ");
@@ -405,19 +310,11 @@ public class DB {
             System.out.println("Ingrese la tarifa: ");
             double tax = scanner.nextDouble();
             scanner.nextLine();
-            System.out.println("Ingrese la hora de partida (hh:mm:ss): ");
-            String hour = scanner.nextLine();
             System.out.println("Ingrese el estado del viaje: ");
             String status = scanner.nextLine();
             System.out.println("Ingrese los asientos disponibles: ");
             int seats = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("Ingrese la novedad: ");
-            String hiccups = scanner.nextLine();
-            System.out.println("Ingrese la fecha del viaje (yyyy-mm-dd): ");
-            String date = scanner.nextLine();
-            System.out.println("Ingrese preferencias del viaje: ");
-            String preferences = scanner.nextLine();
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                 preparedStatement.setString(1, email);
@@ -425,22 +322,9 @@ public class DB {
                 preparedStatement.setInt(3, routeid);
                 preparedStatement.setDouble(4, price);
                 preparedStatement.setDouble(5, tax);
-                preparedStatement.setString(6, hour);
-                preparedStatement.setString(7, status);
-                preparedStatement.setInt(8, seats);
-                preparedStatement.setString(9, hiccups);
-                preparedStatement.setString(10, date);
-                preparedStatement.setString(11, preferences);
-
-                // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.setString(6, status);
+                preparedStatement.setInt(7, seats);
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -448,10 +332,9 @@ public class DB {
     }
 
     public static void newReservation(Scanner scanner) {
-        scanner.nextLine();
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "insert into reservacion VALUES (?, ?, ?, ?, ?)";
+            String insertQuery = "CALL insertarReservacion(?, ?, ?, ?)";
             System.out.println("Ingrese email: ");
             String email = scanner.next();
             System.out.println("Ingrese ID viaje: ");
@@ -460,27 +343,15 @@ public class DB {
             System.out.println("Ingrese ID reserva: ");
             int idRes = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("Ingrese el detalle de la reserva: ");
-            String detalle = scanner.next();
             System.out.println("Ingrese fecha de la reserva (yyyy-mm-dd): ");
-            String fecha = scanner.next();
+            String fecha = scanner.nextLine();
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                 preparedStatement.setString(1, email);
                 preparedStatement.setInt(2, idViaje);
                 preparedStatement.setInt(3, idRes);
-                preparedStatement.setString(4, detalle);
-                preparedStatement.setString(5, fecha);
-
-                // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
+                preparedStatement.setString(4, fecha);
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -719,7 +590,7 @@ public class DB {
                                 System.out.println("Ingrese los nuevos nombres: ");
                                 String name2 = scanner.nextLine();
                                 String field = "nombre";
-                                updateField(scanner,table,  field, name2, PKs, IDs);
+                                updateField(scanner, table, field, name2, PKs, IDs);
                                 break;
                             }
                             case 3: {
@@ -771,7 +642,7 @@ public class DB {
         }
 
     }
-    
+
     public static void editSupportTicket(Scanner scanner) {
         scanner.nextLine();
         String table = "ticketsoporte";
@@ -800,9 +671,8 @@ public class DB {
                         String email = resultSet.getString("email");
                         String descripcion = resultSet.getString("descripcion");
                         System.out.println("ID del empleado de soporte: " + idempleado + "\n"
-                                +
-                                "Correo del usuario: " + email + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Descripción: " +descripcion + "2. CANCELAR" + "\n");
+                                + "Correo del usuario: " + email + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Descripción: " + descripcion + "2. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -826,10 +696,10 @@ public class DB {
 
     }
 
-    private static void updateField(Scanner scanner,String table, String field, Object change, String[] PKs, Object[] IDs) {
+    private static void updateField(Scanner scanner, String table, String field, Object change, String[] PKs, Object[] IDs) {
         try {
             // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "update "+table+" set " + field + " = ? where " + PKs[0] + "= '" + IDs[0] + "'";
+            String insertQuery = "update " + table + " set " + field + " = ? where " + PKs[0] + "= '" + IDs[0] + "'";
             if (PKs.length > 1) {
                 for (int i = 1; i < PKs.length; i++) {
                     insertQuery += " and " + PKs[i] + " = '" + IDs[i] + "'";
@@ -852,8 +722,6 @@ public class DB {
             e.printStackTrace();
         }
     }
-    
-    
 
     public static void getUsers() {
         try {
@@ -905,7 +773,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getmodeloauto(){
+
+    public static void getmodeloauto() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -914,7 +783,7 @@ public class DB {
                     while (resultSet.next()) {
                         String modelo = resultSet.getString("modelo");
                         String colorvehiculo = resultSet.getString("colorvehiculo");
-                        System.out.println("Modelo del carro: "+modelo+"Color: "+(colorvehiculo != null ? colorvehiculo : "N/A"));
+                        System.out.println("Modelo del carro: " + modelo + "Color: " + (colorvehiculo != null ? colorvehiculo : "N/A"));
                     }
                 }
             }
@@ -922,7 +791,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getTicketSoporte(){
+
+    public static void getTicketSoporte() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -932,7 +802,7 @@ public class DB {
                         int idEmpleado = resultSet.getInt("idEmpleado");
                         String email = resultSet.getString("email");
                         String descripcion = resultSet.getString("descripcion");
-                        System.out.println("ID Empleado Encargado: "+idEmpleado+" Email: "+email+" Descripción:"+ (descripcion != null ? descripcion : "N/A"));
+                        System.out.println("ID Empleado Encargado: " + idEmpleado + " Email: " + email + " Descripción:" + (descripcion != null ? descripcion : "N/A"));
                     }
                 }
             }
@@ -940,7 +810,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getParadas(){
+
+    public static void getParadas() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -949,7 +820,7 @@ public class DB {
                     while (resultSet.next()) {
                         int idruta = resultSet.getInt("idruta");
                         String ubicacionparada = resultSet.getString("ubicacionparada");
-                        System.out.println("ID Ruta Asignada: "+idruta+" Parada: "+ubicacionparada);
+                        System.out.println("ID Ruta Asignada: " + idruta + " Parada: " + ubicacionparada);
                     }
                 }
             }
@@ -957,7 +828,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getReservacion(){
+
+    public static void getReservacion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -970,7 +842,7 @@ public class DB {
                         String detalle = resultSet.getString("detalle");
                         Timestamp timestamp = resultSet.getTimestamp("fecha");
                         String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
-                        System.out.println("Email del Pasajero: "+email+" ID viaje: "+idviaje+" ID reserva: "+idreserva+" Detalles: "+(detalle != null ? detalle : "N/A")+" Fecha: "+fecha);
+                        System.out.println("Email del Pasajero: " + email + " ID viaje: " + idviaje + " ID reserva: " + idreserva + " Detalles: " + (detalle != null ? detalle : "N/A") + " Fecha: " + fecha);
                     }
                 }
             }
@@ -978,7 +850,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getRuta(){
+
+    public static void getRuta() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -988,7 +861,7 @@ public class DB {
                         int idruta = resultSet.getInt("idruta");
                         String origen = resultSet.getString("origen");
                         String destino = resultSet.getString("destino");
-                        System.out.println("ID de la ruta: "+idruta+" ID viaje: "+(origen != null ? origen : "N/A")+" ID reserva: "+(destino != null ? destino : "N/A"));
+                        System.out.println("ID de la ruta: " + idruta + " ID viaje: " + (origen != null ? origen : "N/A") + " ID reserva: " + (destino != null ? destino : "N/A"));
                     }
                 }
             }
@@ -996,7 +869,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getPasajero(){
+
+    public static void getPasajero() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -1005,7 +879,7 @@ public class DB {
                     while (resultSet.next()) {
                         String email = resultSet.getString("email");
                         String tarjetapago = resultSet.getString("tarjetapago");
-                        System.out.println("Email del pasajero: "+email+" Tarjeta asociada: "+tarjetapago);
+                        System.out.println("Email del pasajero: " + email + " Tarjeta asociada: " + tarjetapago);
                     }
                 }
             }
@@ -1013,7 +887,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getConductor(){
+
+    public static void getConductor() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -1023,7 +898,7 @@ public class DB {
                         String email = resultSet.getString("email");
                         String cuentabancaria = resultSet.getString("cuentabancaria");
                         String caducidadlicencia = resultSet.getString("caducidadlicencia");
-                        System.out.println("Email del conductor: "+email+" Cuenta asociada: "+(cuentabancaria != null ? cuentabancaria : "N/A")+" Caducidad de la Licencia: "+(caducidadlicencia != null ? caducidadlicencia : "N/A"));
+                        System.out.println("Email del conductor: " + email + " Cuenta asociada: " + (cuentabancaria != null ? cuentabancaria : "N/A") + " Caducidad de la Licencia: " + (caducidadlicencia != null ? caducidadlicencia : "N/A"));
                     }
                 }
             }
@@ -1031,7 +906,8 @@ public class DB {
             e.printStackTrace();
         }
     }
-    public static void getInfoAuto(){
+
+    public static void getInfoAuto() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Statement statement = connection.createStatement()) {
@@ -1042,7 +918,7 @@ public class DB {
                         String placa = resultSet.getString("placa");
                         String modelo = resultSet.getString("modelo");
                         String nrochasis = resultSet.getString("nrochasis");
-                        System.out.println("Email del conductor: "+email+" Placa: "+placa+" Modelo: "+modelo+" NRO de Chasis: "+nrochasis);
+                        System.out.println("Email del conductor: " + email + " Placa: " + placa + " Modelo: " + modelo + " NRO de Chasis: " + nrochasis);
                     }
                 }
             }
@@ -1050,11 +926,11 @@ public class DB {
             e.printStackTrace();
         }
     }
-    
+
     public static void editReview(Scanner scanner) {
         scanner.nextLine();
         String table = "resena";
-        String[] PKs = {"correoReviewed","correoReviewer","idResena"};
+        String[] PKs = {"correoReviewed", "correoReviewer", "idResena"};
         System.out.println("Ingrese el ID de la reseña: ");
         Integer id = scanner.nextInt();
         scanner.nextLine();
@@ -1082,11 +958,9 @@ public class DB {
                         int idReview = resultSet.getInt("idResena");
                         String review = resultSet.getString("resena");
                         System.out.println("ID de la reseña: " + idReview + "\n"
-                                +
-                                "Correo del usuario reseñado: " + correoReseniado + "\n"
-                                +
-                                "Correo del usuario reseñador: " + correoReseniador + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Reseña: " +review + "2. CANCELAR" + "\n");
+                                + "Correo del usuario reseñado: " + correoReseniado + "\n"
+                                + "Correo del usuario reseñador: " + correoReseniador + "\n"
+                                + "Seleccione el campo a editar" + "\n" + "1. Reseña: " + review + "2. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1101,7 +975,7 @@ public class DB {
                             default:
                                 break;
                         }
-                        
+
                     }
                 }
             }
@@ -1110,7 +984,7 @@ public class DB {
         }
 
     }
-    
+
     public static void editConductor(Scanner scanner) {
         scanner.nextLine();
         String table = "conductor";
@@ -1137,7 +1011,7 @@ public class DB {
                         Timestamp caducidadLicencia = resultSet.getTimestamp("caducidadLicencia");
                         String caducidad = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(caducidadLicencia);
                         System.out.println("Correo del conductor: " + email + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Cuenta bancaria: " +cuentaBancaria + "2. Caducidad licencia" + caducidad + "3. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Cuenta bancaria: " + cuentaBancaria + "2. Caducidad licencia" + caducidad + "3. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1173,7 +1047,7 @@ public class DB {
         }
 
     }
-    
+
     public static void editPasajero(Scanner scanner) {
         scanner.nextLine();
         String table = "pasajero";
@@ -1198,7 +1072,7 @@ public class DB {
                         String email = resultSet.getString("email");
                         String tarjetaPago = resultSet.getString("tarjetapago");
                         System.out.println("Correo del conductor: " + email + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Tarjeta de pago: " +tarjetaPago + "2. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Tarjeta de pago: " + tarjetaPago + "2. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1218,16 +1092,16 @@ public class DB {
         }
 
     }
-    
+
     public static void editInfoAuto(Scanner scanner) {
         scanner.nextLine();
         String table = "infoauto";
-        String[] PKs = {"email","placa"};
+        String[] PKs = {"email", "placa"};
         System.out.println("Ingrese el correo del dueño: ");
         String correo = scanner.nextLine();
         System.out.println("Ingrese la placa del auto: ");
         String placa = scanner.nextLine();
-        Object[] IDs = {correo,placa};
+        Object[] IDs = {correo, placa};
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
@@ -1275,7 +1149,7 @@ public class DB {
         }
 
     }
-    
+
     public static void editModeloAuto(Scanner scanner) {
         scanner.nextLine();
         String table = "modeloauto";
@@ -1300,7 +1174,7 @@ public class DB {
                         String model = resultSet.getString("modelo");
                         String color = resultSet.getString("colorvehiculo");
                         System.out.println("Modelo de auto: " + model + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Color de vehículo: " +color + "2. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Color de vehículo: " + color + "2. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1320,7 +1194,7 @@ public class DB {
         }
 
     }
-    
+
     public static void editRuta(Scanner scanner) {
         scanner.nextLine();
         String table = "ruta";
@@ -1347,7 +1221,7 @@ public class DB {
                         String origen = resultSet.getString("origen");
                         String destino = resultSet.getString("destino");
                         System.out.println("Id de la ruta: " + id + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Origen de ruta: " +origen + "2. Destino de ruta"+ destino +"3. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Origen de ruta: " + origen + "2. Destino de ruta" + destino + "3. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1373,11 +1247,11 @@ public class DB {
         }
 
     }
-    
+
     public static void editReservacion(Scanner scanner) {
         scanner.nextLine();
         String table = "reservacion";
-        String[] PKs = {"email","idviaje","idreserva"};
+        String[] PKs = {"email", "idviaje", "idreserva"};
         System.out.println("Ingrese el correo del usuario que hizo reservación: ");
         String correo = scanner.nextLine();
         System.out.println("Ingrese el ID del viaje: ");
@@ -1410,7 +1284,7 @@ public class DB {
                         System.out.println("Correo del usuario que reserva: " + email + "\n"
                                 + "ID del viaje: " + idViaj
                                 + "ID de la reserva: " + idReser
-                                + "Seleccione el campo a editar" + "\n" + "1. Detalle de la reservación: " +detalle + "2. Fecha de la reservación" + fecha + "3. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Detalle de la reservación: " + detalle + "2. Fecha de la reservación" + fecha + "3. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1446,17 +1320,17 @@ public class DB {
         }
 
     }
-    
+
     public static void editViaje(Scanner scanner) {
         scanner.nextLine();
         String table = "viaje";
-        String[] PKs = {"conductor","idviaje"};
+        String[] PKs = {"conductor", "idviaje"};
         System.out.println("Ingrese el correo del conductor del viaje: ");
         String correo = scanner.nextLine();
         System.out.println("Ingrese el ID del viaje: ");
         Integer idViaje = scanner.nextInt();
         scanner.nextLine();
-        Object[] IDs = {correo,idViaje};
+        Object[] IDs = {correo, idViaje};
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String sqlQuery = "SELECT * FROM " + table + " where " + PKs[0] + " = ?";
@@ -1489,15 +1363,15 @@ public class DB {
                         System.out.println("Correo del conductor: " + email + "\n"
                                 + "ID del viaje: " + id
                                 + "ID de la ruta: " + id2
-                                + "Seleccione el campo a editar" + "\n" 
-                                + "1. Precio: " + precio + "\n" 
-                                + "2. Tarifa: " + tarifa + "\n" 
-                                + "3. Hora: " + horaString + "\n" 
-                                + "4. Estado: " + estado + "\n" 
-                                + "5. Asientos disponibles: " + asientos + "\n" 
-                                + "6. Novedad: " + novedad + "\n" 
-                                + "7. Fecha: " + fechaString + "\n" 
-                                + "8. Preferencias: " + preferencias + "\n" 
+                                + "Seleccione el campo a editar" + "\n"
+                                + "1. Precio: " + precio + "\n"
+                                + "2. Tarifa: " + tarifa + "\n"
+                                + "3. Hora: " + horaString + "\n"
+                                + "4. Estado: " + estado + "\n"
+                                + "5. Asientos disponibles: " + asientos + "\n"
+                                + "6. Novedad: " + novedad + "\n"
+                                + "7. Fecha: " + fechaString + "\n"
+                                + "8. Preferencias: " + preferencias + "\n"
                                 + "9. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
@@ -1586,7 +1460,7 @@ public class DB {
                     }
                 }
             }
-        } catch (ClassNotFoundException | SQLException e ) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Viaje no encontrado");
         }
 
