@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @author seoklie
  */
 public class BDavance2 {
-    
+
     static ArrayList<SoporteCliente> soportes = new ArrayList<>();
     static ArrayList<Usuario> usuarios = new ArrayList<>();
     static ArrayList<Resena> resenas = new ArrayList<>();
@@ -23,7 +23,7 @@ public class BDavance2 {
     static ArrayList<Parada> paradas = new ArrayList<>();
     static ArrayList<Reservacion> reser = new ArrayList<>();
     static ArrayList<Ruta> rutas = new ArrayList<>();
-    
+
     public static void main(String[] args) {
         DB.startConnection();
         System.out.println("---MENU---");
@@ -39,6 +39,7 @@ public class BDavance2 {
                     + "4.Eliminar datos\n"
                     + "5.SALIR");
             opcionMenuP = s1.nextInt();
+            s1.nextLine();
             switch (opcionMenuP) {
                 case 1:
                     int opcionMenuA = 0;
@@ -46,6 +47,7 @@ public class BDavance2 {
                         System.out.println("Escoja la tabla donde añadirá datos:");
                         Menu.mostrarMenu();
                         opcionMenuA = s1.nextInt();
+                        s1.nextLine();
                         switch (opcionMenuA) {
                             case 1:
                                 DB.newClientSupport(s1);
