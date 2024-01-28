@@ -143,6 +143,7 @@ public class BDavance2 {
                     System.out.println("Ingrese tabla a consultar:");
                     Menu.mostrarMenu();
                     int opConsultar = s1.nextInt();
+                    s1.nextLine();
                     Menu.consultarDatos(opConsultar);
                     break;
                 }
@@ -152,6 +153,7 @@ public class BDavance2 {
                         System.out.println("Escoja la tabla donde eliminará entradas:");
                         Menu.mostrarMenu();
                         opcionMenuD = s1.nextInt();
+                        s1.nextLine();
                         switch (opcionMenuD) {
                             case 1:
                                 DB.deleteClientSupport(s1);

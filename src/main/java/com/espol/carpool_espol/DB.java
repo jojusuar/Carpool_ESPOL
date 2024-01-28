@@ -369,7 +369,6 @@ public class DB {
     }
 
     public static void deleteUser(Scanner scanner) {
-        scanner.nextLine();
         String table = "usuario";
         String[] PKs = {"email"};
         System.out.println("Ingrese el correo del usuario: ");
@@ -379,7 +378,6 @@ public class DB {
     }
 
     public static void deleteClientSupport(Scanner scanner) {
-        scanner.nextLine();
         String table = "soportealcliente";
         String[] PKs = {"idempleado"};
         System.out.println("Ingrese el ID del empleado: ");
@@ -390,7 +388,6 @@ public class DB {
     }
 
     public static void deleteReview(Scanner scanner) {
-        scanner.nextLine();
         String table = "resena";
         String[] PKs = {"correoReviewed", "correoReviewer", "idResena"};
         System.out.println("Ingrese el correo del usuario reseñado: ");
@@ -405,7 +402,6 @@ public class DB {
     }
 
     public static void deleteCarInfo(Scanner scanner) {
-        scanner.nextLine();
         String table = "infoauto";
         String[] PKs = {"email", "placa"};
         System.out.println("Ingrese el correo del conductor: ");
@@ -417,7 +413,6 @@ public class DB {
     }
 
     public static void deleteSupportTicket(Scanner scanner) {
-        scanner.nextLine();
         String table = "ticketsoporte";
         String[] PKs = {"idEmpleado", "email"};
         System.out.println("Ingrese el ID del asesor de soporte: ");
@@ -430,7 +425,6 @@ public class DB {
     }
 
     public static void deleteCarModel(Scanner scanner) {
-        scanner.nextLine();
         String table = "modeloauto";
         String[] PKs = {"modelo"};
         System.out.println("Ingrese el modelo del auto: ");
@@ -440,7 +434,6 @@ public class DB {
     }
 
     public static void deleteTrip(Scanner scanner) {
-        scanner.nextLine();
         String table = "viaje";
         String[] PKs = {"conductor", "idviaje"};
         System.out.println("Ingrese el correo del conductor del viaje: ");
@@ -453,7 +446,6 @@ public class DB {
     }
 
     public static void deleteStop(Scanner scanner) {
-        scanner.nextLine();
         String table = "paradas";
         String[] PKs = {"idruta", "ubicacionparada"};
         System.out.println("Ingrese el ID de la ruta: ");
@@ -466,7 +458,6 @@ public class DB {
     }
 
     public static void deleteReservation(Scanner scanner) {
-        scanner.nextLine();
         String table = "reservacion";
         String[] PKs = {"email", "idviaje", "idreserva"};
         System.out.println("Ingrese el correo del pasajero: ");
@@ -482,7 +473,6 @@ public class DB {
     }
 
     public static void deleteRoute(Scanner scanner) {
-        scanner.nextLine();
         String table = "ruta";
         String[] PKs = {"idruta"};
         System.out.println("Ingrese el ID de la ruta: ");
@@ -493,7 +483,6 @@ public class DB {
     }
 
     public static void deletePassenger(Scanner scanner) {
-        scanner.nextLine();
         String table = "pasajero";
         String[] PKs = {"email"};
         System.out.println("Ingrese el correo del usuario: ");
@@ -503,7 +492,6 @@ public class DB {
     }
 
     public static void deleteDriver(Scanner scanner) {
-        scanner.nextLine();
         String table = "conductor";
         String[] PKs = {"email"};
         System.out.println("Ingrese el correo del usuario: ");
@@ -545,7 +533,6 @@ public class DB {
     }
 
     public static void editUser(Scanner scanner) {
-        scanner.nextLine();
         String table = "usuario";
         String[] PKs = {"email"};
         System.out.println("Ingrese el correo del usuario: ");
@@ -644,7 +631,6 @@ public class DB {
     }
 
     public static void editSupportTicket(Scanner scanner) {
-        scanner.nextLine();
         String table = "ticketsoporte";
         String[] PKs = {"idEmpleado", "email"};
         System.out.println("Ingrese el ID del empleado de soporte: ");
@@ -928,7 +914,6 @@ public class DB {
     }
 
     public static void editReview(Scanner scanner) {
-        scanner.nextLine();
         String table = "resena";
         String[] PKs = {"correoReviewed", "correoReviewer", "idResena"};
         System.out.println("Ingrese el ID de la reseña: ");
@@ -960,7 +945,7 @@ public class DB {
                         System.out.println("ID de la reseña: " + idReview + "\n"
                                 + "Correo del usuario reseñado: " + correoReseniado + "\n"
                                 + "Correo del usuario reseñador: " + correoReseniador + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Reseña: " + review + "2. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Reseña: " + review + "\n" + "2. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -986,7 +971,6 @@ public class DB {
     }
 
     public static void editConductor(Scanner scanner) {
-        scanner.nextLine();
         String table = "conductor";
         String[] PKs = {"email"};
         System.out.println("Ingrese el correo del conductor: ");
@@ -1011,7 +995,7 @@ public class DB {
                         Timestamp caducidadLicencia = resultSet.getTimestamp("caducidadLicencia");
                         String caducidad = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(caducidadLicencia);
                         System.out.println("Correo del conductor: " + email + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Cuenta bancaria: " + cuentaBancaria + "2. Caducidad licencia" + caducidad + "3. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Cuenta bancaria: " + cuentaBancaria + "\n" + "2. Caducidad licencia" + caducidad + "\n" + "3. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1049,7 +1033,6 @@ public class DB {
     }
 
     public static void editPasajero(Scanner scanner) {
-        scanner.nextLine();
         String table = "pasajero";
         String[] PKs = {"email"};
         System.out.println("Ingrese el correo del pasajero: ");
@@ -1072,7 +1055,7 @@ public class DB {
                         String email = resultSet.getString("email");
                         String tarjetaPago = resultSet.getString("tarjetapago");
                         System.out.println("Correo del conductor: " + email + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Tarjeta de pago: " + tarjetaPago + "2. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Tarjeta de pago: " + tarjetaPago + "\n" + "2. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1094,7 +1077,6 @@ public class DB {
     }
 
     public static void editInfoAuto(Scanner scanner) {
-        scanner.nextLine();
         String table = "infoauto";
         String[] PKs = {"email", "placa"};
         System.out.println("Ingrese el correo del dueño: ");
@@ -1122,7 +1104,7 @@ public class DB {
                         String nroChasis = resultSet.getString("nrochasis");
                         System.out.println("Correo del dueño: " + email + "\n"
                                 + "Placa del auto: " + placaAuto
-                                + "Seleccione el campo a editar" + "\n" + "1. Modelo: " + modeloAuto + "2. Número de chasis" + nroChasis + "3. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Modelo: " + modeloAuto + "\n" + "2. Número de chasis" + nroChasis + "\n" + "3. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1151,7 +1133,6 @@ public class DB {
     }
 
     public static void editModeloAuto(Scanner scanner) {
-        scanner.nextLine();
         String table = "modeloauto";
         String[] PKs = {"modelo"};
         System.out.println("Ingrese el modelo de auto: ");
@@ -1174,7 +1155,7 @@ public class DB {
                         String model = resultSet.getString("modelo");
                         String color = resultSet.getString("colorvehiculo");
                         System.out.println("Modelo de auto: " + model + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Color de vehículo: " + color + "2. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Color de vehículo: " + color + "\n" + "2. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1196,7 +1177,6 @@ public class DB {
     }
 
     public static void editRuta(Scanner scanner) {
-        scanner.nextLine();
         String table = "ruta";
         String[] PKs = {"idruta"};
         System.out.println("Ingrese el ID de la ruta: ");
@@ -1221,7 +1201,7 @@ public class DB {
                         String origen = resultSet.getString("origen");
                         String destino = resultSet.getString("destino");
                         System.out.println("Id de la ruta: " + id + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Origen de ruta: " + origen + "2. Destino de ruta" + destino + "3. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Origen de ruta: " + origen + "\n" + "2. Destino de ruta: " + destino + "\n" + "3. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1249,7 +1229,6 @@ public class DB {
     }
 
     public static void editReservacion(Scanner scanner) {
-        scanner.nextLine();
         String table = "reservacion";
         String[] PKs = {"email", "idviaje", "idreserva"};
         System.out.println("Ingrese el correo del usuario que hizo reservación: ");
@@ -1284,7 +1263,7 @@ public class DB {
                         System.out.println("Correo del usuario que reserva: " + email + "\n"
                                 + "ID del viaje: " + idViaj
                                 + "ID de la reserva: " + idReser
-                                + "Seleccione el campo a editar" + "\n" + "1. Detalle de la reservación: " + detalle + "2. Fecha de la reservación" + fecha + "3. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Detalle de la reservación: " + detalle + "\n" + "2. Fecha de la reservación" + fecha + "\n" + "3. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1322,7 +1301,6 @@ public class DB {
     }
 
     public static void editViaje(Scanner scanner) {
-        scanner.nextLine();
         String table = "viaje";
         String[] PKs = {"conductor", "idviaje"};
         System.out.println("Ingrese el correo del conductor del viaje: ");

@@ -40,6 +40,7 @@ public class Menu {
             contador++;
         }
         int op1 = s2.nextInt();
+        s2.nextLine();
         return op1;
     }
 
@@ -50,6 +51,7 @@ public class Menu {
                 + "3. Igual que x valor.\n"
                 + "4. Acabar filtrado.");
         int op2 = s2.nextInt();
+        s2.nextLine();
         return op2;
     }
 
@@ -60,6 +62,7 @@ public class Menu {
             case 1:
                 System.out.println("Ingrese el ID a buscar: ");
                 int id = s2.nextInt();
+                s2.nextLine();
                 if (BDavance2.soportes.isEmpty()) {
                     System.out.println("No existen valores a mostrar.");
                 } else {
