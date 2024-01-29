@@ -1,5 +1,6 @@
 package com.espol.carpool_espol;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -552,6 +553,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL updateUsuario(?, ?, ?, ?, ?, ?, ?, ?)";
                         String email = resultSet.getString("email");
                         String contrasena = resultSet.getString("contrasena");
                         String name = resultSet.getString("nombre");
@@ -568,54 +570,138 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese la nueva contraseña: ");
                                 String contrasena2 = scanner.nextLine();
-                                String field = "contrasena";
-                                updateField(scanner, table, field, contrasena2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, contrasena2);
+                                    preparedStatement.setString(3, name);
+                                    preparedStatement.setString(4, lastname);
+                                    preparedStatement.setString(5, phone);
+                                    preparedStatement.setInt(6, ispassenger);
+                                    preparedStatement.setInt(7, isdriver);
+                                    preparedStatement.setInt(8, score);
+
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
 
                             case 2: {
                                 System.out.println("Ingrese los nuevos nombres: ");
                                 String name2 = scanner.nextLine();
-                                String field = "nombre";
-                                updateField(scanner, table, field, name2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, contrasena);
+                                    preparedStatement.setString(3, name2);
+                                    preparedStatement.setString(4, lastname);
+                                    preparedStatement.setString(5, phone);
+                                    preparedStatement.setInt(6, ispassenger);
+                                    preparedStatement.setInt(7, isdriver);
+                                    preparedStatement.setInt(8, score);
+
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 3: {
                                 System.out.println("Ingrese los nuevos apellidos: ");
                                 String surname2 = scanner.nextLine();
-                                String field = "apellido";
-                                updateField(scanner, table, field, surname2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, contrasena);
+                                    preparedStatement.setString(3, name);
+                                    preparedStatement.setString(4, surname2);
+                                    preparedStatement.setString(5, phone);
+                                    preparedStatement.setInt(6, ispassenger);
+                                    preparedStatement.setInt(7, isdriver);
+                                    preparedStatement.setInt(8, score);
+
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 4: {
                                 System.out.println("Ingrese el nuevo telefono: ");
                                 String phone2 = scanner.nextLine();
-                                String field = "telefono";
-                                updateField(scanner, table, field, phone2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, contrasena);
+                                    preparedStatement.setString(3, name);
+                                    preparedStatement.setString(4, lastname);
+                                    preparedStatement.setString(5, phone2);
+                                    preparedStatement.setInt(6, ispassenger);
+                                    preparedStatement.setInt(7, isdriver);
+                                    preparedStatement.setInt(8, score);
+
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 5: {
                                 System.out.println("es conductor? 0/1: ");
                                 Integer bool = scanner.nextInt();
                                 scanner.nextLine();
-                                String field = "esconductor";
-                                updateField(scanner, table, field, bool, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, contrasena);
+                                    preparedStatement.setString(3, name);
+                                    preparedStatement.setString(4, lastname);
+                                    preparedStatement.setString(5, phone);
+                                    preparedStatement.setInt(6, ispassenger);
+                                    preparedStatement.setInt(7, bool);
+                                    preparedStatement.setInt(8, score);
+
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 6: {
                                 System.out.println("es pasajero? 0/1: ");
                                 Integer bool = scanner.nextInt();
                                 scanner.nextLine();
-                                String field = "espasajero";
-                                updateField(scanner, table, field, bool, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, contrasena);
+                                    preparedStatement.setString(3, name);
+                                    preparedStatement.setString(4, lastname);
+                                    preparedStatement.setString(5, phone);
+                                    preparedStatement.setInt(6, bool);
+                                    preparedStatement.setInt(7, isdriver);
+                                    preparedStatement.setInt(8, score);
+
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 7: {
                                 System.out.println("Ingresar puntuacion: ");
                                 Integer rating = scanner.nextInt();
                                 scanner.nextLine();
-                                String field = "puntuacion";
-                                updateField(scanner, table, field, rating, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, contrasena);
+                                    preparedStatement.setString(3, name);
+                                    preparedStatement.setString(4, lastname);
+                                    preparedStatement.setString(5, phone);
+                                    preparedStatement.setInt(6, ispassenger);
+                                    preparedStatement.setInt(7, isdriver);
+                                    preparedStatement.setInt(8, rating);
+
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             default:
@@ -627,7 +713,6 @@ public class DB {
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Usuario no encontrado");
         }
-
     }
 
     public static void editSupportTicket(Scanner scanner) {
@@ -938,6 +1023,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL UpdateResena(?, ?, ?, ?)";
                         String correoReseniado = resultSet.getString("correoReviewed");
                         String correoReseniador = resultSet.getString("correoReviewer");
                         int idReview = resultSet.getInt("idResena");
@@ -952,8 +1038,15 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese la nueva reseña: ");
                                 String review2 = scanner.nextLine();
-                                String field = "resena";
-                                updateField(scanner, table, field, review2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, correoReseniado);
+                                    preparedStatement.setString(2, correoReseniador);
+                                    preparedStatement.setInt(3, idReview);
+                                    preparedStatement.setString(4, review2);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
 
@@ -990,6 +1083,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL UpdateConductor(?, ?, ?)";
                         String email = resultSet.getString("email");
                         String cuentaBancaria = resultSet.getString("cuentabancaria");
                         Timestamp caducidadLicencia = resultSet.getTimestamp("caducidadLicencia");
@@ -1002,25 +1096,36 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese la nueva cuenta bancaria: ");
                                 String cuentaBancaria2 = scanner.nextLine();
-                                String field = "cuentabancaria";
-                                updateField(scanner, table, field, cuentaBancaria2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, cuentaBancaria2);
+                                    preparedStatement.setTimestamp(3, caducidadLicencia);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 2:
                                 System.out.println("Ingrese la nueva caducidad de licencia (formato: yyyy-MM-dd HH:mm:ss): ");
                                 String caducidadInput = scanner.nextLine();
-                                String field = "caducidadLicencia";
-
                                 try {
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                     Date caducidadDate = dateFormat.parse(caducidadInput);
-
-                                    updateField(scanner, table, field, caducidadDate, PKs, IDs);
-
+                                    // Convertir Date a Timestamp
+                                    Timestamp caducidadTimestamp = new Timestamp(caducidadDate.getTime());
+                                    try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                        preparedStatement.setString(1, email);
+                                        preparedStatement.setString(2, cuentaBancaria);
+                                        preparedStatement.setTimestamp(3, caducidadTimestamp);
+                                        preparedStatement.executeUpdate();
+                                        System.out.println("Conductor actualizado con éxito.");
+                                    } catch (SQLException e) {
+                                        e.printStackTrace(); 
+                                    }
                                 } catch (ParseException e) {
                                     System.out.println("Formato de fecha y hora incorrecto. Por favor, use yyyy-MM-dd HH:mm:ss");
                                 }
-
                                 break;
                         }
                     }
@@ -1052,6 +1157,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL UpdatePasajero(?, ?)";
                         String email = resultSet.getString("email");
                         String tarjetaPago = resultSet.getString("tarjetapago");
                         System.out.println("Correo del conductor: " + email + "\n"
@@ -1062,8 +1168,13 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese la nueva tarjeta de pago: ");
                                 String tarjeta2 = scanner.nextLine();
-                                String field = "tarjetapago";
-                                updateField(scanner, table, field, tarjeta2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, tarjeta2);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                         }
@@ -1098,6 +1209,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL UpdateInfoAuto(?, ?, ?, ?)";
                         String email = resultSet.getString("email");
                         String placaAuto = resultSet.getString("placa");
                         String modeloAuto = resultSet.getString("modelo");
@@ -1111,16 +1223,29 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese el nuevo modelo del auto: ");
                                 String modelo2 = scanner.nextLine();
-                                String field = "modelo";
-                                updateField(scanner, table, field, modelo2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, placaAuto);
+                                    preparedStatement.setString(3, modelo2);
+                                    preparedStatement.setString(4, nroChasis);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 2:
                                 System.out.println("Ingrese el nuevo número de chasis: ");
                                 String chasis2 = scanner.nextLine();
-                                String field = "nrochasis";
-                                updateField(scanner, table, field, chasis2, PKs, IDs);
-
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, placaAuto);
+                                    preparedStatement.setString(3, modeloAuto);
+                                    preparedStatement.setString(4, chasis2);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                         }
                     }
@@ -1152,6 +1277,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL UpdateModeloAuto(?, ?)";
                         String model = resultSet.getString("modelo");
                         String color = resultSet.getString("colorvehiculo");
                         System.out.println("Modelo de auto: " + model + "\n"
@@ -1162,8 +1288,13 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese el nuevo color de auto: ");
                                 String color2 = scanner.nextLine();
-                                String field = "colorvehiculo";
-                                updateField(scanner, table, field, color2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, model);
+                                    preparedStatement.setString(2, color2);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                         }
@@ -1197,6 +1328,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL UpdateRuta(?, ?, ?)";
                         int id = resultSet.getInt("idruta");
                         String origen = resultSet.getString("origen");
                         String destino = resultSet.getString("destino");
@@ -1208,15 +1340,27 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese el nuevo origen de ruta: ");
                                 String origen2 = scanner.nextLine();
-                                String field = "origen";
-                                updateField(scanner, table, field, origen2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setInt(1, id);
+                                    preparedStatement.setString(2, origen2);
+                                    preparedStatement.setString(3, destino);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 2:
                                 System.out.println("Ingrese el nuevo destino de ruta: ");
                                 String destino2 = scanner.nextLine();
-                                String field = "destino";
-                                updateField(scanner, table, field, destino2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setInt(1, id);
+                                    preparedStatement.setString(2, origen);
+                                    preparedStatement.setString(3, destino2);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                         }
                     }
@@ -1254,6 +1398,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL UpdateReservacion(?, ?, ?, ?, ?)";
                         String email = resultSet.getString("email");
                         int idViaj = resultSet.getInt("idviaje");
                         int idReser = resultSet.getInt("idreserva");
@@ -1270,21 +1415,37 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese los nuevos detalles de la reservación: ");
                                 String detalle2 = scanner.nextLine();
-                                String field = "detalle";
-                                updateField(scanner, table, field, detalle2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, idViaj);
+                                    preparedStatement.setInt(3, idReser);
+                                    preparedStatement.setString(4, detalle);
+                                    preparedStatement.setTimestamp(5, fechaT);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 2:
                                 System.out.println("Ingrese la nueva fecha de reservación (formato: yyyy-MM-dd HH:mm:ss): ");
                                 String fecha2 = scanner.nextLine();
-                                String field = "fecha";
-
                                 try {
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                    Date fechaDate = dateFormat.parse(fecha2);
-
-                                    updateField(scanner, table, field, fechaDate, PKs, IDs);
-
+                                    Date caducidadDate = dateFormat.parse(fecha2);
+                                    // Convertir Date a Timestamp
+                                    Timestamp caducidadTimestamp = new Timestamp(caducidadDate.getTime());
+                                    try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                        preparedStatement.setString(1, email);
+                                        preparedStatement.setInt(2, idViaj);
+                                        preparedStatement.setInt(3, idReser);
+                                        preparedStatement.setString(4, detalle);
+                                        preparedStatement.setTimestamp(5, caducidadTimestamp);
+                                        preparedStatement.executeUpdate();
+                                        System.out.println("Conductor actualizado con éxito.");
+                                    } catch (SQLException e) {
+                                        e.printStackTrace(); 
+                                    }
                                 } catch (ParseException e) {
                                     System.out.println("Formato de fecha y hora incorrecto. Por favor, use yyyy-MM-dd HH:mm:ss");
                                 }
@@ -1323,6 +1484,7 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                        String updateQuery = "CALL UpdateViaje(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                         String email = resultSet.getString("conductor");
                         int id = resultSet.getInt("idviaje");
                         int id2 = resultSet.getInt("idruta");
@@ -1358,23 +1520,56 @@ public class DB {
                                 System.out.println("Ingrese el nuevo precio: ");
                                 double precio2 = scanner.nextDouble();
                                 scanner.nextLine();
-                                String field = "precio";
-                                updateField(scanner, table, field, precio2, PKs, IDs);
-                                break;
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, id);
+                                    preparedStatement.setInt(3, id2);
+                                    preparedStatement.setDouble(4, precio2);
+                                    preparedStatement.setDouble(5, tarifa);
+                                    preparedStatement.setString(6, estado);
+                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setInt(8, asientos);
+                                    preparedStatement.setString(9, novedad);
+                                    
+                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
+                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
+                                    
+                                    preparedStatement.setString(11, preferencias);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                             }
 
                             case 2: {
                                 System.out.println("Ingrese la nueva tarifa: ");
                                 double tarifa2 = scanner.nextDouble();
                                 scanner.nextLine();
-                                String field = "tarifa";
-                                updateField(scanner, table, field, tarifa2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, id);
+                                    preparedStatement.setInt(3, id2);
+                                    preparedStatement.setDouble(4, precio);
+                                    preparedStatement.setDouble(5, tarifa2);
+                                    preparedStatement.setString(6, estado);
+                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setInt(8, asientos);
+                                    preparedStatement.setString(9, novedad);
+                                    
+                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
+                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
+                                    
+                                    preparedStatement.setString(11, preferencias);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 3: {
                                 System.out.println("Ingresar la nueva hora (formato: HH:mm:ss): ");
                                 String horaInput = scanner.nextLine();
-
+                                // FALTAAAAAAAAAAAAAAAA
                                 try {
                                     SimpleDateFormat timeFormat2 = new SimpleDateFormat("HH:mm:ss");
                                     Time hora2 = new Time(timeFormat2.parse(horaInput).getTime());
@@ -1390,29 +1585,80 @@ public class DB {
                             case 4: {
                                 System.out.println("Ingrese el nuevo estado: ");
                                 String estado2 = scanner.nextLine();
-                                String field = "estado";
-                                updateField(scanner, table, field, estado2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, id);
+                                    preparedStatement.setInt(3, id2);
+                                    preparedStatement.setDouble(4, precio);
+                                    preparedStatement.setDouble(5, tarifa);
+                                    preparedStatement.setString(6, estado2);
+                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setInt(8, asientos);
+                                    preparedStatement.setString(9, novedad);
+                                    
+                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
+                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
+                                    
+                                    preparedStatement.setString(11, preferencias);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 5: {
                                 System.out.println("Ingrese los nuevos asientos disponibles: ");
                                 Integer asientos2 = scanner.nextInt();
                                 scanner.nextLine();
-                                String field = "asientosdisponibles";
-                                updateField(scanner, table, field, asientos2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, id);
+                                    preparedStatement.setInt(3, id2);
+                                    preparedStatement.setDouble(4, precio);
+                                    preparedStatement.setDouble(5, tarifa);
+                                    preparedStatement.setString(6, estado);
+                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setInt(8, asientos2);
+                                    preparedStatement.setString(9, novedad);
+                                    
+                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
+                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
+                                    
+                                    preparedStatement.setString(11, preferencias);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 6: {
                                 System.out.println("Ingrese la nueva novedad: ");
                                 String novedad2 = scanner.nextLine();
-                                String field = "novedad";
-                                updateField(scanner, table, field, novedad2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, id);
+                                    preparedStatement.setInt(3, id2);
+                                    preparedStatement.setDouble(4, precio);
+                                    preparedStatement.setDouble(5, tarifa);
+                                    preparedStatement.setString(6, estado);
+                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setInt(8, asientos);
+                                    preparedStatement.setString(9, novedad2);
+                                    
+                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
+                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
+                                    
+                                    preparedStatement.setString(11, preferencias);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             case 7: {
                                 System.out.println("Ingresar la nueva fecha (formato: yyyy-MM-dd): ");
                                 String fechaInput = scanner.nextLine();
-
+                                // FALTAAAAAAAAAAAAAAAA
                                 try {
                                     SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
                                     Date fecha2 = dateFormat2.parse(fechaInput);
@@ -1428,8 +1674,25 @@ public class DB {
                             case 8: {
                                 System.out.println("Ingrese las nuevas preferencias: ");
                                 String preferencias2 = scanner.nextLine();
-                                String field = "preferencias";
-                                updateField(scanner, table, field, preferencias2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, id);
+                                    preparedStatement.setInt(3, id2);
+                                    preparedStatement.setDouble(4, precio);
+                                    preparedStatement.setDouble(5, tarifa);
+                                    preparedStatement.setString(6, estado);
+                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setInt(8, asientos);
+                                    preparedStatement.setString(9, novedad);
+                                    
+                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
+                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
+                                    
+                                    preparedStatement.setString(11, preferencias2);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
                             default:
