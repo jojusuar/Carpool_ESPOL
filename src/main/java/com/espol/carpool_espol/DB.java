@@ -370,165 +370,218 @@ public class DB {
     }
 
     public static void deleteUser(Scanner scanner) {
-        String table = "usuario";
-        String[] PKs = {"email"};
         System.out.println("Ingrese el correo del usuario: ");
         String email = scanner.nextLine();
-        Object[] IDs = {email};
-        deleteRow(table, PKs, IDs);
+
+        String insertQuery = "CALL eliminarUsuario(?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setString(1, email);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteClientSupport(Scanner scanner) {
-        String table = "soportealcliente";
-        String[] PKs = {"idempleado"};
-        System.out.println("Ingrese el ID del empleado: ");
-        Integer ID = scanner.nextInt();
+        System.out.println("Ingrese el id del empleado de soporte al cliente: ");
+        int empleado = scanner.nextInt();
         scanner.nextLine();
-        Object[] IDs = {ID};
-        deleteRow(table, PKs, IDs);
+
+        String insertQuery = "CALL eliminarSoporteAlCliente(?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setInt(1, empleado);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteReview(Scanner scanner) {
-        String table = "resena";
-        String[] PKs = {"correoReviewed", "correoReviewer", "idResena"};
-        System.out.println("Ingrese el correo del usuario reseñado: ");
-        String emailReviewed = scanner.nextLine();
-        System.out.println("Ingrese el correo del usuario que escribió la reseña: ");
-        String emailReviewer = scanner.nextLine();
-        System.out.println("Ingrese el ID de la reseña: ");
-        Integer id = scanner.nextInt();
+        System.out.println("Ingrese el id de la reseña: ");
+        int resenia = scanner.nextInt();
         scanner.nextLine();
-        Object[] IDs = {emailReviewed, emailReviewer, id};
-        deleteRow(table, PKs, IDs);
+        
+        System.out.println("Ingrese el correo del usuario que fue reseñado");
+        String emailReseniado = scanner.nextLine();
+        
+        System.out.println("Ingrese el correo del usuario reseñador");
+        String emailReseniador = scanner.nextLine();
+
+        String insertQuery = "CALL eliminarResena(?,?,?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setInt(1, resenia);
+            preparedStatement.setString(2, emailReseniado);
+            preparedStatement.setString(3, emailReseniador);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteCarInfo(Scanner scanner) {
-        String table = "infoauto";
-        String[] PKs = {"email", "placa"};
-        System.out.println("Ingrese el correo del conductor: ");
-        String email = scanner.nextLine();
-        System.out.println("Ingrese la placa del auto: ");
-        String plate = scanner.nextLine();
-        Object[] IDs = {email, plate};
-        deleteRow(table, PKs, IDs);
+        System.out.println("Ingrese el correo del propietario del auto");
+        String emailowner = scanner.nextLine();
+        
+        System.out.println("Ingrese la placa del auto");
+        String pkplaca = scanner.nextLine();
+
+        String insertQuery = "CALL eliminarInfoAuto(?,?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setString(1, emailowner);
+            preparedStatement.setString(2, pkplaca);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteSupportTicket(Scanner scanner) {
-        String table = "ticketsoporte";
-        String[] PKs = {"idEmpleado", "email"};
-        System.out.println("Ingrese el ID del asesor de soporte: ");
-        Integer id = scanner.nextInt();
+        System.out.println("Ingrese el id del empleado de soporte encargado: ");
+        int idempleado = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("Ingrese el correo del usuario: ");
-        String email = scanner.nextLine();
-        Object[] IDs = {id, email};
-        deleteRow(table, PKs, IDs);
+        
+        System.out.println("Ingrese el correo del usuario que solicita soporte");
+        String emailuser = scanner.nextLine();
+        
+        String insertQuery = "CALL eliminarTicketSoporte(?,?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setInt(1, idempleado);
+            preparedStatement.setString(2, emailuser);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteCarModel(Scanner scanner) {
-        String table = "modeloauto";
-        String[] PKs = {"modelo"};
-        System.out.println("Ingrese el modelo del auto: ");
-        String model = scanner.nextLine();
-        Object[] IDs = {model};
-        deleteRow(table, PKs, IDs);
+        System.out.println("Ingrese la placa del modelo de auto");
+        String pkplaca = scanner.nextLine();
+
+        String insertQuery = "CALL eliminarModeloAuto(?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setString(1, pkplaca);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteTrip(Scanner scanner) {
-        String table = "viaje";
-        String[] PKs = {"conductor", "idviaje"};
-        System.out.println("Ingrese el correo del conductor del viaje: ");
-        String email = scanner.nextLine();
-        System.out.println("Ingrese el ID del viaje: ");
-        Integer id = scanner.nextInt();
+        System.out.println("Ingrese el correo del conductor asignado");
+        String emailconductor = scanner.nextLine();
+
+        System.out.println("Ingrese el id del viaje");
+        int pkviaje = scanner.nextInt();
         scanner.nextLine();
-        Object[] IDs = {email, id};
-        deleteRow(table, PKs, IDs);
+        
+        String insertQuery = "CALL eliminarViaje(?,?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setString(1, emailconductor);
+            preparedStatement.setInt(2, pkviaje);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteStop(Scanner scanner) {
-        String table = "paradas";
-        String[] PKs = {"idruta", "ubicacionparada"};
-        System.out.println("Ingrese el ID de la ruta: ");
-        Integer id = scanner.nextInt();
+        System.out.println("Ingrese el id de la parada");
+        int pkparada = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("Ingrese el lugar de la parada: ");
-        String location = scanner.nextLine();
-        Object[] IDs = {id, location};
-        deleteRow(table, PKs, IDs);
+        
+        System.out.println("Ingrese la ubicacion de la parada");
+        String ubiparada = scanner.nextLine();
+        
+        String insertQuery = "CALL eliminarParada(?,?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setInt(1, pkparada);
+            preparedStatement.setString(2, ubiparada);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteReservation(Scanner scanner) {
-        String table = "reservacion";
-        String[] PKs = {"email", "idviaje", "idreserva"};
-        System.out.println("Ingrese el correo del pasajero: ");
-        String email = scanner.nextLine();
-        System.out.println("Ingrese el ID del viaje: ");
-        Integer idviaje = scanner.nextInt();
+        System.out.println("Ingrese el correo del usuario que hizo la reserva");
+        String emailuser = scanner.nextLine();
+
+        System.out.println("Ingrese el id del viaje");
+        int pkviaje = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("Ingrese el ID de la reserva: ");
-        Integer id = scanner.nextInt();
+        
+        System.out.println("Ingrese el id de la reserva");
+        int pkreserva = scanner.nextInt();
         scanner.nextLine();
-        Object[] IDs = {email, idviaje, id};
-        deleteRow(table, PKs, IDs);
+        
+        String insertQuery = "CALL eliminarReservacion(?,?,?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setString(1, emailuser);
+            preparedStatement.setInt(2, pkviaje);
+            preparedStatement.setInt(3, pkreserva);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteRoute(Scanner scanner) {
-        String table = "ruta";
-        String[] PKs = {"idruta"};
-        System.out.println("Ingrese el ID de la ruta: ");
-        Integer id = scanner.nextInt();
+        System.out.println("Ingrese el id de la ruta");
+        int pkruta = scanner.nextInt();
         scanner.nextLine();
-        Object[] IDs = {id};
-        deleteRow(table, PKs, IDs);
+        
+        String insertQuery = "CALL eliminarRuta(?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setInt(1, pkruta);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deletePassenger(Scanner scanner) {
-        String table = "pasajero";
-        String[] PKs = {"email"};
-        System.out.println("Ingrese el correo del usuario: ");
-        String email = scanner.nextLine();
-        Object[] IDs = {email};
-        deleteRow(table, PKs, IDs);
+        System.out.println("Ingrese el correo del pasajero");
+        String emailuser = scanner.nextLine();
+        
+        String insertQuery = "CALL eliminarPasajero(?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setString(1, emailuser);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteDriver(Scanner scanner) {
-        String table = "conductor";
-        String[] PKs = {"email"};
-        System.out.println("Ingrese el correo del usuario: ");
-        String email = scanner.nextLine();
-        Object[] IDs = {email};
-        deleteRow(table, PKs, IDs);
-    }
-
-    private static void deleteRow(String table, String[] PKs, Object[] IDs) {
-        if (!isWhitelisted(table)) {
-            return;
+        System.out.println("Ingrese el correo del conductor");
+        String emailuser = scanner.nextLine();
+        
+        String insertQuery = "CALL eliminarConductor(?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+            preparedStatement.setString(1, emailuser);
         }
-        try {
-            // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "delete from " + table + " where " + PKs[0] + " = ?";
-            if (PKs.length > 1) {
-                for (int i = 1; i < PKs.length; i++) {
-                    insertQuery += " and " + PKs[i] + " = ?";
-                }
-            }
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-                for (int i = 0; i < PKs.length; i++) {
-                    preparedStatement.setObject(i + 1, IDs[i]);
-                }
-                // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Delete successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Delete failed.");
-                }
-            }
-        } catch (SQLException e) {
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -738,7 +791,8 @@ public class DB {
                 }
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
-                        Integer idempleado = resultSet.getInt("idempleado");
+                        String updateQuery = "CALL UpdateTicketSoporte(?, ?, ?)";
+                        int idempleado = resultSet.getInt("idempleado");
                         String email = resultSet.getString("email");
                         String descripcion = resultSet.getString("descripcion");
                         System.out.println("ID del empleado de soporte: " + idempleado + "\n"
@@ -750,8 +804,14 @@ public class DB {
                             case 1: {
                                 System.out.println("Ingrese la nueva descripción: ");
                                 String descripcion2 = scanner.nextLine();
-                                String field = "descripcion";
-                                updateField(scanner, table, field, descripcion2, PKs, IDs);
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setInt(1, idempleado);
+                                    preparedStatement.setString(2, email);
+                                    preparedStatement.setString(3, descripcion2);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
+                                }
                                 break;
                             }
 
@@ -765,33 +825,6 @@ public class DB {
             System.out.println("Ticket de Soporte no encontrado");
         }
 
-    }
-
-    private static void updateField(Scanner scanner, String table, String field, Object change, String[] PKs, Object[] IDs) {
-        try {
-            // Query parametrizado para evitar ataques de SQL injection
-            String insertQuery = "update " + table + " set " + field + " = ? where " + PKs[0] + "= '" + IDs[0] + "'";
-            if (PKs.length > 1) {
-                for (int i = 1; i < PKs.length; i++) {
-                    insertQuery += " and " + PKs[i] + " = '" + IDs[i] + "'";
-                }
-            }
-            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-                preparedStatement.setObject(1, change);
-
-                // Ejecuta la inserción
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                // devuelve el número de entradas añadidas
-                if (rowsAffected > 0) {
-                    System.out.println("Insert successful. Rows affected: " + rowsAffected);
-                } else {
-                    System.out.println("Insert failed.");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void getUsers() {
@@ -1099,7 +1132,7 @@ public class DB {
                                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
                                     preparedStatement.setString(1, email);
                                     preparedStatement.setString(2, cuentaBancaria2);
-                                    preparedStatement.setTimestamp(3, caducidadLicencia);
+                                    preparedStatement.setString(3, caducidad);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
                                     System.err.println("Error: Se han ingresado números no válidos.");
@@ -1108,23 +1141,15 @@ public class DB {
                             }
                             case 2:
                                 System.out.println("Ingrese la nueva caducidad de licencia (formato: yyyy-MM-dd HH:mm:ss): ");
-                                String caducidadInput = scanner.nextLine();
-                                try {
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                    Date caducidadDate = dateFormat.parse(caducidadInput);
-                                    // Convertir Date a Timestamp
-                                    Timestamp caducidadTimestamp = new Timestamp(caducidadDate.getTime());
-                                    try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-                                        preparedStatement.setString(1, email);
-                                        preparedStatement.setString(2, cuentaBancaria);
-                                        preparedStatement.setTimestamp(3, caducidadTimestamp);
-                                        preparedStatement.executeUpdate();
-                                        System.out.println("Conductor actualizado con éxito.");
-                                    } catch (SQLException e) {
-                                        e.printStackTrace(); 
-                                    }
-                                } catch (ParseException e) {
-                                    System.out.println("Formato de fecha y hora incorrecto. Por favor, use yyyy-MM-dd HH:mm:ss");
+                                String caducidad2 = scanner.nextLine();
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setString(2, cuentaBancaria);
+                                    preparedStatement.setString(3, caducidad2);
+                                    preparedStatement.executeUpdate();
+                                    System.out.println("Conductor actualizado con éxito.");
+                                } catch (SQLException e) {
+                                    e.printStackTrace(); 
                                 }
                                 break;
                         }
@@ -1420,7 +1445,7 @@ public class DB {
                                     preparedStatement.setInt(2, idViaj);
                                     preparedStatement.setInt(3, idReser);
                                     preparedStatement.setString(4, detalle);
-                                    preparedStatement.setTimestamp(5, fechaT);
+                                    preparedStatement.setString(5, fecha);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
                                     System.err.println("Error: Se han ingresado números no válidos.");
@@ -1430,26 +1455,17 @@ public class DB {
                             case 2:
                                 System.out.println("Ingrese la nueva fecha de reservación (formato: yyyy-MM-dd HH:mm:ss): ");
                                 String fecha2 = scanner.nextLine();
-                                try {
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                    Date caducidadDate = dateFormat.parse(fecha2);
-                                    // Convertir Date a Timestamp
-                                    Timestamp caducidadTimestamp = new Timestamp(caducidadDate.getTime());
                                     try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
                                         preparedStatement.setString(1, email);
                                         preparedStatement.setInt(2, idViaj);
                                         preparedStatement.setInt(3, idReser);
                                         preparedStatement.setString(4, detalle);
-                                        preparedStatement.setTimestamp(5, caducidadTimestamp);
+                                        preparedStatement.setString(5, fecha2);
                                         preparedStatement.executeUpdate();
                                         System.out.println("Conductor actualizado con éxito.");
                                     } catch (SQLException e) {
                                         e.printStackTrace(); 
                                     }
-                                } catch (ParseException e) {
-                                    System.out.println("Formato de fecha y hora incorrecto. Por favor, use yyyy-MM-dd HH:mm:ss");
-                                }
-
                                 break;
                         }
                     }
@@ -1527,13 +1543,10 @@ public class DB {
                                     preparedStatement.setDouble(4, precio2);
                                     preparedStatement.setDouble(5, tarifa);
                                     preparedStatement.setString(6, estado);
-                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setString(7, horaString);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    
-                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
-                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
-                                    
+                                    preparedStatement.setString(10, fechaString);
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1549,16 +1562,13 @@ public class DB {
                                     preparedStatement.setString(1, email);
                                     preparedStatement.setInt(2, id);
                                     preparedStatement.setInt(3, id2);
-                                    preparedStatement.setDouble(4, precio);
-                                    preparedStatement.setDouble(5, tarifa2);
+                                    preparedStatement.setDouble(4, tarifa2);
+                                    preparedStatement.setDouble(5, tarifa);
                                     preparedStatement.setString(6, estado);
-                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setString(7, horaString);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    
-                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
-                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
-                                    
+                                    preparedStatement.setString(10, fechaString);
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1569,16 +1579,21 @@ public class DB {
                             case 3: {
                                 System.out.println("Ingresar la nueva hora (formato: HH:mm:ss): ");
                                 String horaInput = scanner.nextLine();
-                                // FALTAAAAAAAAAAAAAAAA
-                                try {
-                                    SimpleDateFormat timeFormat2 = new SimpleDateFormat("HH:mm:ss");
-                                    Time hora2 = new Time(timeFormat2.parse(horaInput).getTime());
-
-                                    String field = "hora";
-                                    updateField(scanner, table, field, hora2, PKs, IDs);
-
-                                } catch (ParseException e) {
-                                    System.out.println("Formato de hora incorrecto. Por favor, use HH:mm:ss");
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, id);
+                                    preparedStatement.setInt(3, id2);
+                                    preparedStatement.setDouble(4, precio);
+                                    preparedStatement.setDouble(5, tarifa);
+                                    preparedStatement.setString(6, estado);
+                                    preparedStatement.setString(7, horaInput);
+                                    preparedStatement.setInt(8, asientos);
+                                    preparedStatement.setString(9, novedad);
+                                    preparedStatement.setString(10, fechaString);
+                                    preparedStatement.setString(11, preferencias);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
                                 }
                                 break;
                             }
@@ -1592,13 +1607,10 @@ public class DB {
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
                                     preparedStatement.setString(6, estado2);
-                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setString(7, horaString);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    
-                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
-                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
-                                    
+                                    preparedStatement.setString(10, fechaString);
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1617,13 +1629,10 @@ public class DB {
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
                                     preparedStatement.setString(6, estado);
-                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setString(7, horaString);
                                     preparedStatement.setInt(8, asientos2);
                                     preparedStatement.setString(9, novedad);
-                                    
-                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
-                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
-                                    
+                                    preparedStatement.setString(10, fechaString);
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1641,13 +1650,10 @@ public class DB {
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
                                     preparedStatement.setString(6, estado);
-                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setString(7, horaString);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad2);
-                                    
-                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
-                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
-                                    
+                                    preparedStatement.setString(10, fechaString);
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1658,16 +1664,21 @@ public class DB {
                             case 7: {
                                 System.out.println("Ingresar la nueva fecha (formato: yyyy-MM-dd): ");
                                 String fechaInput = scanner.nextLine();
-                                // FALTAAAAAAAAAAAAAAAA
-                                try {
-                                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-                                    Date fecha2 = dateFormat2.parse(fechaInput);
-
-                                    String field = "fecha";
-                                    updateField(scanner, table, field, fecha2, PKs, IDs);
-
-                                } catch (ParseException e) {
-                                    System.out.println("Formato de fecha incorrecto. Por favor, use yyyy-MM-dd");
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    preparedStatement.setString(1, email);
+                                    preparedStatement.setInt(2, id);
+                                    preparedStatement.setInt(3, id2);
+                                    preparedStatement.setDouble(4, precio);
+                                    preparedStatement.setDouble(5, tarifa);
+                                    preparedStatement.setString(6, estado);
+                                    preparedStatement.setString(7, horaString);
+                                    preparedStatement.setInt(8, asientos);
+                                    preparedStatement.setString(9, novedad);
+                                    preparedStatement.setString(10, fechaInput);
+                                    preparedStatement.setString(11, preferencias);
+                                    preparedStatement.executeUpdate();
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Error: Se han ingresado números no válidos.");
                                 }
                                 break;
                             }
@@ -1681,13 +1692,10 @@ public class DB {
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
                                     preparedStatement.setString(6, estado);
-                                    preparedStatement.setTime(7, hora);
+                                    preparedStatement.setString(7, horaString);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    
-                                    java.util.Date utilDate = fecha; // fecha es de tipo java.sql.Date
-                                    preparedStatement.setTimestamp(10, new Timestamp(utilDate.getTime()));
-                                    
+                                    preparedStatement.setString(10, fechaString);
                                     preparedStatement.setString(11, preferencias2);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
