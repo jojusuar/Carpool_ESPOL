@@ -1595,18 +1595,11 @@ public class DB {
                                     preparedStatement.setInt(3, id2);
                                     preparedStatement.setDouble(4, precio2);
                                     preparedStatement.setDouble(5, tarifa);
-
-                                    // Combina fecha y hora en un objeto Timestamp
-                                    Timestamp timestamp = new Timestamp(fecha.getTime() + hora.getTime());
-                                    preparedStatement.setTimestamp(6, timestamp);
-
+                                    preparedStatement.setTime(6, hora);
                                     preparedStatement.setString(7, estado);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-
-                                    // No necesitas convertir la fecha para setTimestamp
-                                    preparedStatement.setTimestamp(10, new Timestamp(fecha.getTime()));
-
+                                    preparedStatement.setDate(10, new java.sql.Date(fecha.getTime()));
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
 
@@ -1623,13 +1616,13 @@ public class DB {
                                     preparedStatement.setString(1, email);
                                     preparedStatement.setInt(2, id);
                                     preparedStatement.setInt(3, id2);
-                                    preparedStatement.setDouble(4, tarifa2);
-                                    preparedStatement.setDouble(5, tarifa);
-                                    preparedStatement.setString(6, estado);
-                                    preparedStatement.setString(7, horaString);
+                                    preparedStatement.setDouble(4, precio);
+                                    preparedStatement.setDouble(5, tarifa2);
+                                    preparedStatement.setTime(6, hora);
+                                    preparedStatement.setString(7, estado);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    preparedStatement.setString(10, fechaString);
+                                    preparedStatement.setDate(10, new java.sql.Date(fecha.getTime()));
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1641,20 +1634,23 @@ public class DB {
                                 System.out.println("Ingresar la nueva hora (formato: HH:mm:ss): ");
                                 String horaInput = scanner.nextLine();
                                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    Time HoraIT = Time.valueOf(horaInput);
                                     preparedStatement.setString(1, email);
                                     preparedStatement.setInt(2, id);
                                     preparedStatement.setInt(3, id2);
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
-                                    preparedStatement.setString(6, estado);
-                                    preparedStatement.setString(7, horaInput);
+                                    preparedStatement.setTime(6, HoraIT);
+                                    preparedStatement.setString(7, estado);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    preparedStatement.setString(10, fechaString);
+                                    preparedStatement.setDate(10, new java.sql.Date(fecha.getTime()));
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
-                                } catch (NumberFormatException e) {
+                                } catch (NumberFormatException e ) {
                                     System.err.println("Error: Se han ingresado números no válidos.");
+                                } catch (IllegalArgumentException e) {
+                                    System.err.println("Error: Formato de hora no válido.");
                                 }
                                 break;
                             }
@@ -1667,11 +1663,11 @@ public class DB {
                                     preparedStatement.setInt(3, id2);
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
-                                    preparedStatement.setString(6, estado2);
-                                    preparedStatement.setString(7, horaString);
+                                    preparedStatement.setTime(6, hora);
+                                    preparedStatement.setString(7, estado2);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    preparedStatement.setString(10, fechaString);
+                                    preparedStatement.setDate(10, new java.sql.Date(fecha.getTime()));
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1689,11 +1685,11 @@ public class DB {
                                     preparedStatement.setInt(3, id2);
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
-                                    preparedStatement.setString(6, estado);
-                                    preparedStatement.setString(7, horaString);
+                                    preparedStatement.setTime(6, hora);
+                                    preparedStatement.setString(7, estado);
                                     preparedStatement.setInt(8, asientos2);
                                     preparedStatement.setString(9, novedad);
-                                    preparedStatement.setString(10, fechaString);
+                                    preparedStatement.setDate(10, new java.sql.Date(fecha.getTime()));
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1710,11 +1706,11 @@ public class DB {
                                     preparedStatement.setInt(3, id2);
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
-                                    preparedStatement.setString(6, estado);
-                                    preparedStatement.setString(7, horaString);
+                                    preparedStatement.setTime(6, hora);
+                                    preparedStatement.setString(7, estado);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad2);
-                                    preparedStatement.setString(10, fechaString);
+                                    preparedStatement.setDate(10, new java.sql.Date(fecha.getTime()));
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
@@ -1726,20 +1722,23 @@ public class DB {
                                 System.out.println("Ingresar la nueva fecha (formato: yyyy-MM-dd): ");
                                 String fechaInput = scanner.nextLine();
                                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                                    Date fechaInputDate = dateFormat.parse(fechaInput);
                                     preparedStatement.setString(1, email);
                                     preparedStatement.setInt(2, id);
                                     preparedStatement.setInt(3, id2);
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
-                                    preparedStatement.setString(6, estado);
-                                    preparedStatement.setString(7, horaString);
+                                    preparedStatement.setTime(6, hora);
+                                    preparedStatement.setString(7, estado);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    preparedStatement.setString(10, fechaInput);
+                                    preparedStatement.setDate(10, new java.sql.Date(fechaInputDate.getTime()));
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
                                     System.err.println("Error: Se han ingresado números no válidos.");
+                                }catch(ParseException  e){
+                                    System.err.println("Error: Fecha no valida.");
                                 }
                                 break;
                             }
@@ -1752,11 +1751,11 @@ public class DB {
                                     preparedStatement.setInt(3, id2);
                                     preparedStatement.setDouble(4, precio);
                                     preparedStatement.setDouble(5, tarifa);
-                                    preparedStatement.setString(6, estado);
-                                    preparedStatement.setString(7, horaString);
+                                    preparedStatement.setTime(6, hora);
+                                    preparedStatement.setString(7, estado);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    preparedStatement.setString(10, fechaString);
+                                    preparedStatement.setDate(10, new java.sql.Date(fecha.getTime()));
                                     preparedStatement.setString(11, preferencias2);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
