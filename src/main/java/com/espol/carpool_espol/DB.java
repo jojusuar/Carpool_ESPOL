@@ -954,6 +954,43 @@ public class DB {
             e.printStackTrace();
         }
     }
+    
+    public static void getResenia() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM resena";
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        String correoR1 = resultSet.getString("correoReviewed");
+                        String correoR2 = resultSet.getString("correoReviewer");
+                        int idresena = resultSet.getInt("idResena");
+                        String resenia = resultSet.getString("resena");
+                        System.out.println("Email del usuario reseñado: " + correoR1 + " Email del usuario que reseña: " + correoR2 + " ID de la reseña: " + idresena + " Reseña: " + (resenia != null ? resenia : "N/A"));
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void getSoporteCliente() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Statement statement = connection.createStatement()) {
+                String sqlQuery = "SELECT * FROM soportealcliente";
+                try (ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+                    while (resultSet.next()) {
+                        int empleado = resultSet.getInt("idempleado");
+                        System.out.println("ID del empleado de soporte al cliente: " + empleado);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void getRuta() {
         try {
@@ -1122,7 +1159,7 @@ public class DB {
                         Timestamp caducidadLicencia = resultSet.getTimestamp("caducidadLicencia");
                         String caducidad = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(caducidadLicencia);
                         System.out.println("Correo del conductor: " + email + "\n"
-                                + "Seleccione el campo a editar" + "\n" + "1. Cuenta bancaria: " + cuentaBancaria + "\n" + "2. Caducidad licencia" + caducidad + "\n" + "3. CANCELAR" + "\n");
+                                + "Seleccione el campo a editar" + "\n" + "1. Cuenta bancaria: " + cuentaBancaria + "\n" + "2. Caducidad licencia: " + caducidad + "\n" + "3. CANCELAR" + "\n");
                         int choice = scanner.nextInt();
                         scanner.nextLine();
                         switch (choice) {
@@ -1132,7 +1169,7 @@ public class DB {
                                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
                                     preparedStatement.setString(1, email);
                                     preparedStatement.setString(2, cuentaBancaria2);
-                                    preparedStatement.setString(3, caducidad);
+                                    preparedStatement.setTimestamp(3, caducidadLicencia);                                   
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
                                     System.err.println("Error: Se han ingresado números no válidos.");
@@ -1145,13 +1182,21 @@ public class DB {
                                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
                                     preparedStatement.setString(1, email);
                                     preparedStatement.setString(2, cuentaBancaria);
-                                    preparedStatement.setString(3, caducidad2);
+
+                                    // Convierte la cadena de fecha a un objeto Timestamp
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date parsedDate = dateFormat.parse(caducidad2);
+                                    Timestamp timestamp = new Timestamp(parsedDate.getTime());
+
+                                    // Usa setTimestamp para el campo de datetime en tu consulta SQL
+                                    preparedStatement.setTimestamp(3, timestamp);
+
                                     preparedStatement.executeUpdate();
                                     System.out.println("Conductor actualizado con éxito.");
-                                } catch (SQLException e) {
-                                    e.printStackTrace(); 
+                                } catch (SQLException | ParseException e) {
+                                    e.printStackTrace();
                                 }
-                                break;
+
                         }
                     }
                 }
@@ -1445,7 +1490,7 @@ public class DB {
                                     preparedStatement.setInt(2, idViaj);
                                     preparedStatement.setInt(3, idReser);
                                     preparedStatement.setString(4, detalle);
-                                    preparedStatement.setString(5, fecha);
+                                    preparedStatement.setTimestamp(5, fechaT);
                                     preparedStatement.executeUpdate();
                                 } catch (NumberFormatException e) {
                                     System.err.println("Error: Se han ingresado números no válidos.");
@@ -1460,10 +1505,18 @@ public class DB {
                                         preparedStatement.setInt(2, idViaj);
                                         preparedStatement.setInt(3, idReser);
                                         preparedStatement.setString(4, detalle);
-                                        preparedStatement.setString(5, fecha2);
+                                        
+                                        // Convierte la cadena de fecha a un objeto Timestamp
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        Date parsedDate = dateFormat.parse(fecha2);
+                                        Timestamp timestamp = new Timestamp(parsedDate.getTime());
+
+                                        // Usa setTimestamp para el campo de datetime en tu consulta SQL
+                                        preparedStatement.setTimestamp(5, timestamp);
+                                        
                                         preparedStatement.executeUpdate();
                                         System.out.println("Conductor actualizado con éxito.");
-                                    } catch (SQLException e) {
+                                    } catch (SQLException | ParseException e) {
                                         e.printStackTrace(); 
                                     }
                                 break;
@@ -1542,13 +1595,21 @@ public class DB {
                                     preparedStatement.setInt(3, id2);
                                     preparedStatement.setDouble(4, precio2);
                                     preparedStatement.setDouble(5, tarifa);
-                                    preparedStatement.setString(6, estado);
-                                    preparedStatement.setString(7, horaString);
+
+                                    // Combina fecha y hora en un objeto Timestamp
+                                    Timestamp timestamp = new Timestamp(fecha.getTime() + hora.getTime());
+                                    preparedStatement.setTimestamp(6, timestamp);
+
+                                    preparedStatement.setString(7, estado);
                                     preparedStatement.setInt(8, asientos);
                                     preparedStatement.setString(9, novedad);
-                                    preparedStatement.setString(10, fechaString);
+
+                                    // No necesitas convertir la fecha para setTimestamp
+                                    preparedStatement.setTimestamp(10, new Timestamp(fecha.getTime()));
+
                                     preparedStatement.setString(11, preferencias);
                                     preparedStatement.executeUpdate();
+
                                 } catch (NumberFormatException e) {
                                     System.err.println("Error: Se han ingresado números no válidos.");
                                 }

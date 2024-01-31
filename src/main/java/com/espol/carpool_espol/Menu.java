@@ -30,59 +30,18 @@ public class Menu {
                 + "13. VOLVER");
     }
 
-    public static int mostrarDatosConsulta(Scanner s2, Object o) {
-        Class clase = o.getClass();
-        System.out.println("Dato a consultar: ");
-        Field[] fields = clase.getDeclaredFields();
-        int contador = 1;
-        for (Field f : fields) {
-            System.out.println(contador + ". " + f.getName());
-            contador++;
-        }
-        int op1 = s2.nextInt();
-        s2.nextLine();
-        return op1;
-    }
-
-    public static int comparaciones(Scanner s2) {
-        System.out.println("Consultar por:\n"
-                + "1.Mayor que x valor.\n"
-                + "2. Menor que x valor.\n"
-                + "3. Igual que x valor.\n"
-                + "4. Acabar filtrado.");
-        int op2 = s2.nextInt();
-        s2.nextLine();
-        return op2;
-    }
-
     public static void consultarDatos(int opcion) {
         Scanner s2 = new Scanner(System.in);
 
         switch (opcion) {
             case 1:
-                System.out.println("Ingrese el ID a buscar: ");
-                int id = s2.nextInt();
-                s2.nextLine();
-                if (BDavance2.soportes.isEmpty()) {
-                    System.out.println("No existen valores a mostrar.");
-                } else {
-                    for (SoporteCliente sc : BDavance2.soportes) {
-                        if (sc.getIdEmpleado() == id) {
-                            System.out.println("Existe.");
-                        } else {
-                            System.out.println("No encontrado.");
-                        }
-                    }
-                }
+                DB.getSoporteCliente();
                 break;
-
             case 2:
                 DB.getUsers();
                 break;
             case 3:
-                Resena r = new Resena("", "", 0, "");
-                int op1 = Menu.mostrarDatosConsulta(s2, r);
-                int op2 = Menu.comparaciones(s2);
+                DB.getResenia();
                 break;
             case 4:
                 DB.getInfoAuto();
@@ -91,7 +50,7 @@ public class Menu {
                 DB.getTicketSoporte();
                 break;
             case 6:
-                
+                DB.getmodeloauto();
                 break;
             case 7:
                 DB.getTrips();
